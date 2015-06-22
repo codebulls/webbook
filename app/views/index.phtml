@@ -1,0 +1,104 @@
+<?php
+use Phalcon\Mvc\Url;
+$url = new Url();
+use \Phalcon\Tag as Tag;
+?>
+<!DOCTYPE html>
+<html>
+    <head>
+    	<?php
+	        echo $this->tag->stylesheetLink("css/materialize.min.css");
+	        echo $this->tag->stylesheetLink("css/style.css");
+	    ?>
+        <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+        <title>Webbook Generator</title>
+    </head>
+    <body>
+    	<?php
+
+	    	$c_auth = $this->session->get('c_auth');
+	    	$a_auth = $this->session->get('a_auth');
+			if($c_auth)
+			{ ?>
+				<nav class="light-blue lighten-1" role="navigation">
+			        <div class="nav-wrapper container"><a id="logo-container" href="/" class="brand-logo"><?php echo $this->tag->image("img/logo.png"); ?></a>
+			            <ul class="right hide-on-med-and-down">
+			                <li><a href="<?php echo $url->get("center"); ?>">Management Center</a></li>
+			                <li><a href="<?php echo $url->get("webbook"); ?>">Webboks</a></li>
+			                <li><a href="<?php echo $url->get("project"); ?>">Projekte</a></li>
+			                <li><a href="<?php echo $url->get("account"); ?>">Konto</a></li>
+			                <li><a href="<?php echo $url->get("contact"); ?>">Kontakt</a></li>
+			                <li><a href="<?php echo $url->get("login/end"); ?>">Logout</a></li>
+			            </ul>
+
+			            <ul id="nav-mobile" class="side-nav">
+			                <li><a href="/">Management Center</a></li>
+			                <li><a href="<?php echo $url->get("webbook"); ?>">Webboks</a></li>
+			                <li><a href="<?php echo $url->get("project"); ?>">Projekte</a></li>
+			                <li><a href="<?php echo $url->get("account"); ?>">Konto</a></li>
+			                <li><a href="<?php echo $url->get("contact"); ?>">Kontakt</a></li>
+			                <li><a href="<?php echo $url->get("login/end"); ?>">Logout</a></li>
+			            </ul>
+			            <a href="#" data-activates="nav-mobile" class="button-collapse"><i class="mdi-navigation-menu"></i></a>
+			        </div>
+			    </nav>
+			<?php }	
+			elseif($a_auth) { ?>
+				<nav class="light-blue lighten-1" role="navigation">
+			        <div class="nav-wrapper container"><a id="logo-container" href="/" class="brand-logo"><?php echo $this->tag->image("img/logo.png"); ?></a>
+			            <ul class="right hide-on-med-and-down">
+			                <li><a href="center" data-activates="administration">Management Center</a></li>
+			                <li><a href="<?php echo $url->get("webbook"); ?>">Kunden</a></li>
+			                <li><a href="<?php echo $url->get("project"); ?>">Accounts</a></li>
+			                <li><a href="<?php echo $url->get("account"); ?>">Webbooks</a></li>
+			                <li><a href="<?php echo $url->get("contact"); ?>">Accounts</a></li>
+			                <li><a href="<?php echo $url->get("login/end"); ?>">Logout</a></li>
+			            </ul>
+
+			            <ul id="nav-mobile" class="side-nav">
+			                <li><a href="/">Management Center</a></li>
+			                <li><a href="<?php echo $url->get("webbook"); ?>">Kunden</a></li>
+			                <li><a href="<?php echo $url->get("project"); ?>">Accounts</a></li>
+			                <li><a href="<?php echo $url->get("account"); ?>">Webbooks</a></li>
+			                <li><a href="<?php echo $url->get("contact"); ?>">Accounts</a></li>
+			                <li><a href="<?php echo $url->get("login/end"); ?>">Logout</a></li>
+			            </ul>
+			            <a href="#" data-activates="nav-mobile" class="button-collapse"><i class="mdi-navigation-menu"></i></a>
+			        </div>
+			    </nav>
+			<?php }	else { ?>
+				<nav class="light-blue lighten-1" role="navigation">
+			        <div class="nav-wrapper container"><a id="logo-container" href="/" class="brand-logo"><?php echo $this->tag->image("img/logo.png"); ?></a>
+			            <ul class="right hide-on-med-and-down">
+			                <li>
+			                    <a href="/" data-activates="administration">Startseite</a>
+			                </li>
+			                <li><a href="<?php echo $url->get("about") ?>">Über Webbook</a></li>
+			                <li><a href="<?php echo $url->get("user/new") ?>">Registrierung</a></li>
+			                <li><a href="<?php echo $url->get("contact") ?>">Kontakt</a></li>
+			                <li><?=Tag::linkTo(array("/login/index/", 'Login'));?></li>
+			            </ul>
+
+			            <ul id="nav-mobile" class="side-nav">
+			                <li>
+			                    <a href="/">Startseite</a>
+			                </li>
+			                <li><a href="<?php echo $url->get("about") ?>">Über Webbook</a></li>
+			                <li><a href="<?php echo $url->get("user/new"); ?>">Registrierung</a></li>
+			                <li><a href="<?php echo $url->get("contact"); ?>">Kontakt</a></li>
+			                <li><a href="<?php echo $url->get("login/index");?>">Login</a></li>
+			            </ul>
+			            <a href="#" data-activates="nav-mobile" class="button-collapse"><i class="mdi-navigation-menu"></i></a>
+			        </div>
+			    </nav>
+			<?php } ?>
+
+        <?=$this->getContent();?>
+        <?php
+		    echo $this->tag->javascriptInclude("js/jquery.min.js");
+		    echo $this->tag->javascriptInclude("js/materialize.min.js");
+		    echo $this->tag->javascriptInclude("js/init.js");
+		    echo $this->tag->javascriptInclude("js/main.js");
+		?>
+    </body>
+</html>

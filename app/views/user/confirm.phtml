@@ -1,0 +1,62 @@
+<?php
+use Phalcon\Mvc\Url;
+$url = new Url();
+?>
+<div class="container">
+    <div class="section">
+        <div class="l12 s12">
+            <h1 class="header center white-text lighten-1 accent-3">Bestätigung!</h1>
+        </div>
+    </div>
+</div>
+<div class="container">
+    <div class="row">
+        <h4 class="white-text">Ihre Daten wurden übermittelt.</h4>
+    </div>
+    <div class="row">
+        <div class="col s12 m12 l12 white-text">
+            Sehr <?=$prefix?> <strong><?=$confirmCreatedCustomer->lastname?></strong>, wir bedanken uns für Ihre Registrierung.
+            Die Daten werden nun intern nochmals überprüft und Ihr Benutzerkonto dann freigeschaltet.
+        </div>
+        <div class="col s12 m12 l12 white-text">
+            Sobald Ihr Konto freigeschaltet ist, können Sie sich mit Ihrer Email-Adresse und Ihrem Passwort anmelden und Ihr erstes WebBook erstellen!
+        </div>
+    </div>
+    <div class="row">
+        <div class="col s12 m12 l12 light-blue lighten-1">
+            <h5 class="white-text center-align">Übersicht Ihrer Daten</h5>
+        </div>
+    </div>
+    <div class="row">
+        <table class="bordered">
+            <tr>
+                <td class="white-text grey darken-2">Ihre Benutzerkonto Kennung:</td>
+                <td class="white-text"><?=$akey?></td>
+            </tr>
+            <tr>
+                <td class="white-text grey darken-2">
+                    Ausgewählter Tarif
+                </td>
+                <td class="white-text"><?=$tariff?></td>
+            </tr>
+            <tr>
+                <td class="white-text grey darken-2">Vertragslaufzeit:</td>
+                <td class="white-text">12 Monate</td>
+            </tr>
+        </table>
+    </div>
+    <div class="row">
+        <div class="col s12 m12 l6">
+            <a class="btn waves-effect waves-light fullsize light-blue lighten-1" href="<?php echo $url->get("/") ?>">
+                Zur Startseite
+                <i class="mdi-action-home left"></i>
+            </a>
+        </div>
+        <div class="col s12 m12 l6">
+            <a class="btn waves-effect waves-light fullsize light-blue lighten-1" href="<?php echo $url->get("#") ?>">
+                Anmelden
+                <i class="mdi-action-lock right"></i>
+            </a>
+        </div>
+    </div>
+</div>

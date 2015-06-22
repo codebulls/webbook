@@ -1,0 +1,39 @@
+<?php
+use Phalcon\Mvc\Url;
+use \Phalcon\Tag as Tag;
+$url = new Url();
+?>
+<div class="container">
+    <div class="section">
+        <div class="l12 s12">
+            <h1 class="header center white-text lighten-1 accent-3">Kontakt</h1>
+        </div>
+    </div>
+</div>
+<div class="container">
+	<div class="row">
+		<?php echo Tag::form(array("contact/send", "method" => "post")) ?>
+            <div class="input-field col s12 m12 l12">
+                <input type="text" name="name" id="name" class="validate"/>
+                <label for="name">Name</label>
+            </div>
+            <div class="input-field col s12 m12 l12">
+                <input type="email" name="email" id="email" class="validate"/>
+                <label for="email">E-Mail</label>
+            </div>
+            <div class="input-field col s12">
+	          	<textarea id="message" class="materialize-textarea"></textarea>
+	          	<label for="message">Nachricht</label>
+        	</div>
+    </div>
+    <div class="row">
+        <div class="col s12 m12 l6">
+            <?=Tag::linkTo(array("/", 'Zurück zur Startseite<i class="mdi-action-home left"></i>', "class" => "btn waves-effect marginBottomTen waves-light fullsize light-blue lighten-1"));?>
+        </div>
+        <div class="col s12 m12 l6">
+            <button class="btn waves-effect waves-light fullsize light-blue lighten-1" type="submit" name="action">Anmelden
+                <i class="mdi-action-lock-open right"></i>
+            </button>
+        </div>
+	</div>
+</div>
