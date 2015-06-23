@@ -7,18 +7,22 @@ class AccountController extends ControllerBase
 
 	}
 
-	public function createAction()
+	public function createAction($tariff)
 	{
 		$users = User::find();
         $id = $users->getLast();
 
-        $user_id = Users::findFirstById($id->id);
+        $user_id = User::findFirstById($id->id);
         $account = new Account();
         $account->tariff_id = $tariff;
         $account->user_id = $user_id->id;
         $account->active = 0;
         $account->akey = sha1(time());
         $account->created_at = date("Y-m-d H:i:s");
+        $account->user_deactivate = 0;
+        $account->user_deactivate_confirm = 0;
+        $account->deleted = 0;
+        $account->hidden = 0;
 
         $result = $account->create();
 
@@ -44,7 +48,7 @@ class AccountController extends ControllerBase
                         $this->dispatcher->forward(array(
                             "controller" => "user",
                             "action" => "confirm",
-                            "params" => array('customerid' => $user_id->id)
+                            "params" => array('userid' => $user_id->id)
                         ));
                     }
                 }

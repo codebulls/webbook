@@ -102,14 +102,13 @@ class UserController extends ControllerBase
             	$user->phone = '---';
             }
 
-            $user->user_group = 0;
+            $user->user_group = 1;
             $user->hidden = 0;
             $user->deleted = 0;
 
             $result = $user->create();
 
             if(!$result) {
-            	print_r('createAction not ok');exit;
                 print_r($user->getMessages());
             }
             else
@@ -124,7 +123,7 @@ class UserController extends ControllerBase
         }
 	}
 
-	public function confirmAction()
+	public function confirmAction($userid)
 	{
 		$user = User::findFirstById($userid);
        

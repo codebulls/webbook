@@ -4,6 +4,6 @@ class User extends BaseModel
 {
 	public function initialize()
 	{
-		$this->hasOne('id', 'Account', 'user_id');
+		$this->belongsTo('user_group', 'Usergroup', 'id');
 	}
 }

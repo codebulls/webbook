@@ -25,7 +25,7 @@ class SecurityPlugin extends Plugin
 	{
 
 		//throw new \Exception("something");
-
+		#print_r($this->persistent->acl);exit;
 		if (!isset($this->persistent->acl)) {
 
 			$acl = new AclList();
@@ -78,6 +78,7 @@ class SecurityPlugin extends Plugin
 			foreach ($publicResources as $resource => $actions) {
 				$acl->addResource(new Resource($resource), $actions);
 			}
+			
 
 			//Grant access to public areas to both users and guests
 			foreach ($roles as $role) {
