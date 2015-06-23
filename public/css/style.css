@@ -19,8 +19,19 @@ html, body {
     margin-bottom: 15px;
 }
 
+.roundLink {
+    border: 2px solid;
+    border-radius: 28px;
+    padding: 3px 16px;
+    background: #29B6F6;
+}
+
 .marginBottomTen {
     margin-bottom: 10px;
+}
+
+.marginBottom50 {
+  margin-bottom: 50px;
 }
 
 .container h1 {
@@ -32,6 +43,9 @@ html, body {
     width:100%;
 }
 
+.widthauto {
+    width: auto!important;
+}
 
 #fgmail {
     color: #29B6F6;

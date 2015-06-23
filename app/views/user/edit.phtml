@@ -1,0 +1,88 @@
+<?php
+use Phalcon\Mvc\Url;
+use \Phalcon\Tag as Tag;
+$url = new Url();
+?>
+<div class="container">
+    <div class="row">
+        <div class="l12 s12">
+            <h1 class="header center white-text lighten-1 accent-3">Daten bearbeiten</h1>
+        </div>
+    </div>
+</div>
+<div class="container">
+	<?=Tag::form(array("user/update/$user->id", "method" => "post", "name" => "updateForm"));?>
+        <div class="row">
+            <?php if(!empty($user->prefix)) : ?>
+	            <div class="input-field col s12 m12 l12">
+	                <i class="mdi-action-account-child prefix"></i>
+	                <input id="c-prefix" type="text" name="prefix" class="validate" value="<?=$user->prefix?>"/>
+	                <label for="c-prefix">Anrede</label>
+	            </div>
+        	<?php endif; ?>
+            <div class="input-field col s12 m12 l12">
+                <i class="mdi-action-account-circle prefix"></i>
+                <input type="text" name="firstname" id="firstname" value="<?=$user->firstname?>" class="validate" />
+                <label for="c-firstname">Vorname</label>
+            </div>
+            <div class="input-field col s12 m12 l12">
+                <i class="mdi-action-account-circle prefix"></i>
+                <input type="text" name="lastname" id="lastname" value="<?=$user->lastname?>" class="validate" />
+                <label for="c-lastname">Nachname</label>
+            </div>
+            <div class="input-field col s12 m12 l12">
+                <i class="mdi-content-mail prefix"></i>
+                <input id="email" type="email" name="email" class="validate" value="<?=$user->email?>" />
+                <label for="email">E-Mail</label>
+            </div>
+            <?php if($user->company != '---') : ?>
+	            <div class="input-field col s12 m12 l12">
+	                <i class="mdi-action-account-balance prefix"></i>
+	                <input id="company" name="company" type="text" class="validate" value="<?=$user->company?>" />
+	                <label for="company">Firma / Organisation</label>
+	            </div>
+        	<?php endif; ?>
+        	<?php if($user->phone != '---') : ?>
+	            <div class="input-field col s12 m12 l12">
+	                <i class="mdi-maps-local-phone prefix"></i>
+	                <input id="phone" name="phone" type="text" class="validate" value="<?=$user->phone?>" />
+	                <label for="phone">Telefon</label>
+	            </div>
+	        <?php endif; ?>
+            <div class="input-field col s12 m12 l8">
+                <i class="mdi-maps-pin-drop prefix"></i>
+                <input name="street" id="street" type="text" class="validate" value="<?=$user->street?>" />
+                <label for="street">Straße</label>
+            </div>
+            <div class="input-field col s12 m12 l4">
+                <i class="mdi-device-gps-fixed prefix"></i>
+                <input name="zip" id="zip" class="validate" type="text" value="<?=$user->zip?>" />
+                <label for="zip">PLZ</label>
+            </div>
+            <div class="input-field col s12 m12 l12">
+                <i class="mdi-maps-map prefix"></i>
+                <input name="city" id="city" class="validate" type="text" value="<?=$user->city?>" />
+                <label for="city">Stadt</label>
+            </div>
+            <div class="input-field col s12 l12 m12">
+                <select name="land" id="land">
+                    <option value="<?=$land->id?>" selected><?=$land->title;?></option>
+                    <?php foreach ($lands as $l): ?>
+                    <option value="<?=$l->id?>"><?=$l->title?></option>
+                    <?php endforeach; ?>
+                </select>
+                <label for="tariff">Land Auswahl: bitte wählen Sie ein Land aus.</label>
+            </div>
+        </div>
+        <div class="row">
+            <div class="col s12 m6 l6">
+                <?=Tag::linkTo(array("account", 'Zurück<i class="mdi-navigation-arrow-back left"></i>', "class" => "btn waves-effect waves-light marginBottomTen fullsize light-blue lighten-1"));?>
+            </div>
+            <div class="col s12 m6 l6">
+                <button class="btn waves-effect waves-light fullsize light-blue lighten-1" type="submit" id="updateSubmit" name="update" >Speichern
+                    <i class="mdi-content-send right"></i>
+                </button>                
+            </div>
+        </div>
+    </form>
+</div>

@@ -17,6 +17,46 @@ class UserController extends ControllerBase
         ]);
 	}
 
+    public function editAction($uid)
+    {
+        $user = User::findFirstById($uid);
+        $lands = Land::find();
+        $cForLand = "id = ".$user->land;
+        $land = Land::findFirst(array($cForLand));
+
+        $this->view->setVars([
+            'user' => $user,
+            'lands' => $lands,
+            'land' => $land
+        ]);
+    }
+
+    public function updateAction($uid)
+    {
+        if(isset($_POST['update']))
+        {
+            $user = User::findFirstById($uid);
+            foreach($_POST as $k=>$v)
+            {
+                if(!empty($v))
+                {
+                    $user->$k = $v;
+                }
+            }   
+            $result = $user->update();
+            if(!$result) {
+                print_r($user->getMessages());
+            }
+            else
+            {
+                $this->dispatcher->forward(array(
+                   "controller" => "account",
+                   "action"     => "index"
+                ));
+            }
+        }
+    }
+
 	public function checkdataAction()
 	{
 		$this->view->disable();

@@ -1,0 +1,115 @@
+<?php
+use Phalcon\Mvc\Url;
+use \Phalcon\Tag as Tag;
+$url = new Url();
+?>
+<div class="container">
+    <div class="row">
+        <div class="l12 s12">
+            <h1 class="header center white-text lighten-1 accent-3">Ihr Benutzerkonto</h1>
+        </div>
+    </div>
+</div>
+<div class="container">
+	<div class="row">
+		<h4 class="white-text">Allgemeine Informationen</h4>
+	</div>
+	<div class="row">
+		<div class="col s12 m7 l7">
+			<table class="bordered">
+				<tr>
+					<td class="white-text"><strong>Name:</strong></td>
+					<td class="white-text"><?=$user->lastname;?></td>
+				</tr>
+				<tr>
+					<td class="white-text"><strong>Vorname:</strong></td>
+					<td class="white-text"><?=$user->firstname;?></td>
+				</tr>
+				<tr>
+					<td class="white-text"><strong>Email:</strong></td>
+					<td class="white-text"><?=$user->email;?></td>
+				</tr>
+				<?php if($user->company != '---') : ?>
+				<tr>
+					<td class="white-text"><strong>Firma/Organisation:</strong></td>
+					<td class="white-text"><?=$user->company;?></td>
+				</tr>
+				<?php endif; ?>
+				<?php if($user->phone != '---') : ?>
+				<tr>
+					<td class="white-text"><strong>Telefon:</strong></td>
+					<td class="white-text"><?=$user->phone;?></td>
+				</tr>
+				<?php endif; ?>
+				<tr>
+					<td class="white-text"><strong>Straße:</strong></td>
+					<td class="white-text"><?=$user->street;?></td>
+				</tr>
+				<tr>
+					<td class="white-text"><strong>PLZ:</strong></td>
+					<td class="white-text"><?=$user->zip;?></td>
+				</tr>
+				<tr>
+					<td class="white-text"><strong>Ort:</strong></td>
+					<td class="white-text"><?=$user->city;?></td>
+				</tr>
+			</table>
+		</div>
+		<div class="col s12 m4 l4 offset-m1 offset-l1">
+			<div class="card">
+            <div class="card-image center">
+              <?php echo $this->tag->image(array("img/testlogo.png","class" => "widthauto")); ?>
+              <span class="card-title black-text blue-grey lighten-4 z-depth-4">
+              	<?php if($user->company == '---') : ?>
+              		<?=$user->lastname;?>
+              	<?php else : ?>
+              		<?=$user->company;?>
+              	<?php endif; ?>
+              </span>
+            </div>
+            <div class="card-content">
+              <p>
+              	Ihr Logo wird nur im Rahmen Ihrer Webbooks verwendet. Eine Weitergabe an Dritte oder sonstige Nutzung ist ausgeschlossen.
+              </p>
+            </div>
+            <div class="card-action right-align">
+              <a class="light-blue-text text-lighten-1" href="#">Logo ändern</a>
+            </div>
+          </div>
+		</div>
+	</div>
+</div>
+<div class="container">
+	<div class="row">
+	<div class="input-field col s12 m12 l7">
+            <a class="btn waves-effect waves-light fullsize light-blue lighten-1" href="<?php echo $url->get("user/edit/".$user->id) ?>">
+                Bearbeiten<i class="material-icons right">edit</i>
+            </a>
+        </div>
+	</div>
+</div>
+<div class="container">
+	<div class="row">
+		<h4 class="white-text">Account-Informationen</h4>
+	</div>
+	<div class="row">
+		<table class="bordered responsive">
+			<tr>
+				<td class="white-text"><strong>Tarif:</strong></td>
+				<td class="white-text"><?=$tariff->title;?></td>
+			</tr>
+			<tr>
+				<td class="white-text"><strong>Account-Key:</strong></td>
+				<td class="white-text"><?=$account->akey;?></td>
+			</tr>
+			<tr>
+				<td class="white-text"><strong>Webbooks/Monat:</strong></td>
+				<td class="white-text"><?=$tariff->wbmaxmonth;?></td>
+			</tr>
+			<tr>
+				<td class="white-text"><strong>Vertragslaufzeit:</strong></td>
+				<td class="white-text"><?=$tariff->activeperiodemonth;?></td>
+			</tr>
+		</table>
+	</div>
+</div>

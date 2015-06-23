@@ -10,6 +10,7 @@ use \Phalcon\Tag as Tag;
 	        echo $this->tag->stylesheetLink("css/materialize.min.css");
 	        echo $this->tag->stylesheetLink("css/style.css");
 	    ?>
+	    <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
         <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
         <title>Webbook Generator</title>
     </head>
@@ -47,7 +48,7 @@ use \Phalcon\Tag as Tag;
 				<nav class="light-blue lighten-1" role="navigation">
 			        <div class="nav-wrapper container"><a id="logo-container" href="/" class="brand-logo"><?php echo $this->tag->image("img/logo.png"); ?></a>
 			            <ul class="right hide-on-med-and-down">
-			                <li><a href="center" data-activates="administration">Management Center</a></li>
+			                <li><a href="<?php echo $url->get("admincenter"); ?>" data-activates="administration">Administration Center</a></li>
 			                <li><a href="<?php echo $url->get("webbook"); ?>">Kunden</a></li>
 			                <li><a href="<?php echo $url->get("project"); ?>">Accounts</a></li>
 			                <li><a href="<?php echo $url->get("account"); ?>">Webbooks</a></li>

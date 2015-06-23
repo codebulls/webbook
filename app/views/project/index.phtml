@@ -1,0 +1,81 @@
+<?php
+use Phalcon\Mvc\Url;
+use \Phalcon\Tag as Tag;
+$url = new Url();
+?>
+<div class="container">
+    <div class="row">
+        <div class="l12 s12">
+            <h1 class="header center white-text lighten-1 accent-3">Projekte</h1>
+        </div>
+    </div>
+</div>
+<div class="container">
+	<div class="row">
+		<?php if($anzahlprojekte != 0) : ?>
+			 <table class="bordered responsive-table">
+		        <tr>
+		            <th class="white-text grey darken-2">Nr</th>
+		            <th class="white-text grey darken-2">Titel</th>
+		            <th class="white-text grey darken-2">Webseite</th>
+		            <th class="white-text grey darken-2 center">Anzahl WebBooks</th>
+		            <th class="white-text grey darken-2">Aktionen</th>
+		        </tr>
+		        <?php $counter = 1; ?>
+		        <?php foreach ($projects as $project): ?>
+		            <tr>
+		                <td class="white-text"><?php echo $counter; ?></td>
+		                <td class="white-text"><?=$project->title;?></td>
+		                <td class="white-text"><?=$project->weburl;?></td>
+		                <td class="white-text center">
+		                  <?php
+		                  	if(Webbook::getcount($project->id) == 0)
+		                  	{
+		                  		echo '<span class="roundLink">'.Webbook::getcount($project->id).'</span>';
+		                  	}
+		                  	else
+		                  	{
+		                  		echo '<a href="#"><span class="roundLink">'.Webbook::getcount($project->id).'</span></a>';
+		                  	}      
+		                  ?>
+		                </td>
+		                <td>
+		                    <div class="row">
+		                        <div class="col s12 m12 l12">
+			                        <a class="btn waves-effect waves-light fullsize light-blue lighten-1 modal-trigger" href="#ep-<?=$project->id?>">
+						                <i class="material-icons">edit</i>
+						            </a>
+						            <div id="ep-<?=$project->id?>" class="modal">
+						                <div class="modal-content">
+							                <h4>Projekt aktualisieren</h4>
+				                            <form id="newproject" name="newproject" action="/project/update/<?php echo $project->id; ?>" method="post">
+				                                <div class="input-field col s12 m12 l12">
+				                                    <i class="mdi-editor-format-size prefix"></i>
+				                                    <input id="projecttitle" name="projecttitle" type="text" class="validate" value="<?=$project->title;?>" />
+				                                    <label for="projecttitle">Projekt-Titel</label>
+				                                </div>
+				                                <div class="input-field col s12 m12 l12">
+				                                    <i class="mdi-editor-insert-link prefix"></i>
+				                                    <input id="projecturl" name="projecturl" type="text" class="validate" value="<?=$project->weburl;?>" />
+				                                    <label for="projecturl">Projekt-Webseite</label>
+				                                </div>
+				                                <button class="btn waves-effect waves-light fullsize light-blue lighten-1" type="submit" id="createDirect" name="action" value="proupdate">Projekt speichern
+				                                    <i class="mdi-content-send right"></i>
+				                                </button>
+				                            </form>
+				                        	<div class="modal-footer">
+				                            	<a href="#!" class=" modal-action modal-close waves-effect waves-red btn-flat">Schließen</a>
+				                        	</div>
+				                        </div>
+			                        </div>
+						            </div>
+		                        </div>
+		                    </div>
+		                </td>
+		            </tr>
+		            <?php $counter++; ?>
+		        <?php endforeach; ?>
+		    </table>
+		<?php endif; ?>
+	</div>
+</div>

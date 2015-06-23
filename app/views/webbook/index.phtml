@@ -1,0 +1,30 @@
+<?php
+use Phalcon\Mvc\Url;
+use \Phalcon\Tag as Tag;
+$url = new Url();
+?>
+<div class="container">
+    <div class="row">
+        <div class="l12 s12">
+            <h1 class="header center white-text lighten-1 accent-3">Webbooks</h1>
+            
+        </div>
+    </div>
+</div>
+<div class="container">
+	<?php if($anzahlprojekte < 1) : ?>
+		<div class="row">
+			<p class="white-text">Sie habe noch keine Projekte angelegt. Um ein Webbook erstellen zu können, muss mindestens ein Projekt angelegt werden, dem das zu erstellende Webbook zugewiesen werden kann.</p>
+		</div>
+	<?php endif; ?>
+	<div class="row">
+		<div class="col s12 m12 l12">
+            <?=Tag::linkTo(array("/center", 'Zurück zum Center<i class="mdi-navigation-arrow-back left"></i>', 'class' => 'btn waves-effect waves-light fullsize light-blue lighten-1'));?>
+        </div>
+	</div>
+	<?php if($anzahlwebbooks < 1) : ?>
+		<div class="row">
+			<h3 class="white-text center">Sie haben aktuell keine Webbooks.</h3>
+		</div>
+	<?php endif; ?>
+</div>

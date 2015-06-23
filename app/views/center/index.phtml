@@ -1,0 +1,31 @@
+<?php
+use Phalcon\Mvc\Url;
+use \Phalcon\Tag as Tag;
+$url = new Url();
+?>
+<div class="container">
+    <div class="row">
+        <div class="l12 s12">
+            <h1 class="header center white-text lighten-1 accent-3">Willkommen im Management Center</h1>
+            <h5 class="center white-text">Sie sind angemeldet als: <?=$user->firstname.' '.$user->lastname;?></h5>
+        </div>
+    </div>
+</div>
+<div class="container">
+	<div class="row">
+  <?php if($anzahlwebbooks == 0) : ?>
+		<div class="col s12 m12">
+      <div class="card teal accent-3">
+        <div class="card-content black-text">
+          <span class="card-title black-text">Gratis Webbook!</span>
+          <p>Sie haben die Möglichkeit ein Webbook frei zu erstellen. Dieses Angebot soll Ihnen die Möglichkeit geben unser Webbook zu testen.</p>
+        </div>
+        <div class="card-action">
+          <a class="indigo-text text-darken-1" href="#">Webbook testen</a>
+          <a class="indigo-text text-darken-1" href="#">Account freischalten</a>
+        </div>
+      </div>
+    </div>
+  <?php endif; ?>
+	</div>
+</div>

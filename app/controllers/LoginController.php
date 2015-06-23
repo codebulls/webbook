@@ -33,13 +33,14 @@ class LoginController extends ControllerBase
 				$password = $this->request->getPost('password');
 
 				$user = User::findFirst(array(
-					"email = :email: AND password = :password:",
-					'bind' => array('email' => $email, 'password' => $password)
+					"email = :email:",
+					'bind' => array('email' => $email)
 				));
 
-				if($user != false)
+				
+				if(password_verify($password, $user->password) != false)
 				{
-					if($user->id == 1)
+					if($user->user_group == 2)
 					{
 						$this->_registerAdminSession($user);
 						return $this->dispatcher->forward(array(
@@ -53,8 +54,7 @@ class LoginController extends ControllerBase
 						$this->_registerCustomerSession($user);
 						return $this->dispatcher->forward(array(
 							"controller" => "center",
-							"action" => "index",
-							"params" => array('uid' => $user->id)
+							"action" => "index"
 						));
 					}
 

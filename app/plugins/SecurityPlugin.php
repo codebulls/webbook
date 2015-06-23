@@ -55,10 +55,10 @@ class SecurityPlugin extends Plugin
 
 			//Kunden Zugriffe
 			$customerResources = array(
-				'user'    => array('index'),
-				'account'     => array('index'),
+				'user'    => array('index', 'update', 'edit'),
+				'account'     => array('index', 'edit', 'update'),
 				'webbook' => array('index', 'new', 'edit', 'save', 'create', 'delete'),
-				'project' => array('index', 'new', 'create', 'edit'),
+				'project' => array('index', 'new', 'create', 'edit', 'update'),
 				'center' => array('index')
 			);
 			foreach ($customerResources as $resource => $actions) {

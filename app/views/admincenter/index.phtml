@@ -1,0 +1,13 @@
+<?php
+use Phalcon\Mvc\Url;
+use \Phalcon\Tag as Tag;
+$url = new Url();
+?>
+<div class="container">
+    <div class="row">
+        <div class="l12 s12">
+            <h1 class="header center white-text lighten-1 accent-3">Willkommen im Administration Center</h1>
+            <h5 class="center white-text">Sie sind angemeldet als: <?=$user->firstname.' '.$user->lastname;?></h5>
+        </div>
+    </div>
+</div>

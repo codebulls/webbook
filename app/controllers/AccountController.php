@@ -4,8 +4,22 @@ class AccountController extends ControllerBase
 {
 	public function indexAction()
 	{
+        $s = $this->session->get('c_auth');
+        $user = User::findFirstById($s['id']);
 
+        $cForAccount = "user_id = ".$s['id'];
+        $account = Account::findFirst(array($cForAccount));
+
+        $cForTariff  = "id = ".$account->tariff_id;
+        $tariff = Tariff::findFirst(array($cForTariff));
+
+        $this->view->setVars([
+            'user' => $user,
+            'account' => $account,
+            'tariff' => $tariff
+        ]);
 	}
+
 
 	public function createAction($tariff)
 	{
