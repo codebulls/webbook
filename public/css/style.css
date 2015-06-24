@@ -2,9 +2,36 @@ html, body {
     background: #777;
 }
 
+body {
+    display: flex;
+    min-height: 100vh;
+    flex-direction: column;
+}
+
+main {
+    flex: 1 0 auto;
+  }
+      
+.accordionBlue .active .collapsible-header {
+  background: #29B6F6;
+  color: #fff;
+}
+
+.marginNull {
+  margin: 0;
+}
+
+.wbCounter {
+  font-size: 19px;
+}
+
 #logo-container {
     max-height: 55px;
     top: 3px
+}
+
+main .dropdown-content {
+  z-index: 100;
 }
 
 #index-banner h1, .shadowHeader {

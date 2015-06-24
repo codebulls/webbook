@@ -2,25 +2,31 @@
 
 class WebbookController extends ControllerBase
 {
+
 	public function indexAction()
 	{
-		$s = $this->session->get('c_auth');
-		$user = User::findFirstById($s['id']);
-
-		$cForAccount = "user_id = ".$user->id;
+		$cForAccount = "user_id = ".$this->gUserId();
 		$account = Account::findFirst(array($cForAccount));
 
 		$cForWebbook = "account_id = ".$account->id;
 		$webbook = Webbook::find(array($cForWebbook));
 
-		$cForProject = "user_id = ".$user->id;
+		$cForProject = "user_id = ".$this->gUserId();
 		$project = Project::find(array($cForProject));
 
+		$projekte = array();
+
+		foreach($webbook as $w)
+        {
+            if(!isset($projekte[$w->project_id])) $projekte[$w->project_id] = Project::findFirst(array("id = ".$w->project_id));
+        }
+
 		$this->view->setVars([
-			'user' => $user,
+			'user' => $this->gUser(),
 			'account' => $account,
 			'webbook' => $webbook,
 			'project' => $project,
+			'projekte' => $projekte,
 			'anzahlprojekte' => count($project),
 			'anzahlwebbooks' => count($webbook)
 		]);
@@ -28,7 +34,101 @@ class WebbookController extends ControllerBase
 
 	public function newAction()
 	{
-
+		$projects = Project::find("user_id = ".$this->gUserId());
+		
+		$this->view->setVars([
+			'projects' => $projects 
+		]);
 	}
 
+	public function checkFormDataAction()
+    {
+        $this->view->disable();
+        $error = array();
+        $p = $_POST;
+        foreach($p as $k => $v)
+        {
+            if(empty($v))
+            {
+                $error[] = $k;
+            }
+        }
+
+        if(count($error) < 1)
+        {
+            echo json_encode(array('res' => 'ok'));
+        }
+        else
+        {
+            echo json_encode($error);
+        }
+    }
+
+
+    public function createAction()
+    {
+    	if(isset($_POST['action']) && $_POST['action'] == 'wbcreate')
+    	{
+    		$errors = array();
+    		$account = Account::findFirst("user_id = ".$this->gUserId());
+    		$pdfpath = getcwd()."/customers/".$account->akey."/pdfs";
+    		$libpath = "http://".$_SERVER['SERVER_NAME']."/libs/";
+    		$pdf = $pdfpath."/".basename($_FILES["pdffile"]["name"]);
+
+
+    		if(!file_exists($pdf))
+    		{
+
+    			$fileType = pathinfo($pdf,PATHINFO_EXTENSION);
+    			if($fileType == "pdf")
+    			{
+    				if(move_uploaded_file($_FILES["pdffile"]["tmp_name"], $pdf))
+    				{
+    					$webbook = new Webbook();
+    					$webbook->account_id = $account->id;
+    					$webbook->project_id = $_POST['project'];
+                        $webbook->title = $_POST['pdfname'];
+                        $webbook->pdfpath = $pdf;
+                        $webbook->libpath = $libpath;
+                        $webbook->customer_location_first = $account->akey;
+                        $webbook->outpath = sha1(time().$account->id.$this->gUserId());
+                        $webbook->full_link = '---';
+                        $webbook->active = 0;
+                        $webbook->convert_confirmed = 0;
+                        $webbook->processing = 0;
+                        $webbook->hidden = 0;
+                        $webbook->deleted = 0;
+
+                        $result = $webbook->create();
+
+                        if(!$result)
+                        {
+                        	print_r($webbook->getMessages());
+                        }
+                        else
+                        {
+                        	$this->response->redirect('webbook');
+                        }
+    				}
+    				else
+    				{
+    					print_r('Fehler beim Verschieben von der Datei');
+    				}
+    			}
+    			else
+    			{
+    				print_r('Falscher Datei-Format');
+    			}
+    		}
+    		else
+    		{
+    			print_r('Angeblich gibt es schon diese Datei oder diesen Ordner');
+    		}
+    	}
+    }
+
+    public function deleteAction($wid)
+    {
+    	$webbook = Webbook::findFirstById($wid);    	
+    }
 }

@@ -3,28 +3,151 @@ use Phalcon\Mvc\Url;
 use \Phalcon\Tag as Tag;
 $url = new Url();
 ?>
-<div class="container">
-    <div class="row">
-        <div class="l12 s12">
-            <h1 class="header center white-text lighten-1 accent-3">Webbooks</h1>
-            
-        </div>
-    </div>
-</div>
-<div class="container">
-	<?php if($anzahlprojekte < 1) : ?>
-		<div class="row">
-			<p class="white-text">Sie habe noch keine Projekte angelegt. Um ein Webbook erstellen zu können, muss mindestens ein Projekt angelegt werden, dem das zu erstellende Webbook zugewiesen werden kann.</p>
-		</div>
-	<?php endif; ?>
-	<div class="row">
-		<div class="col s12 m12 l12">
-            <?=Tag::linkTo(array("/center", 'Zurück zum Center<i class="mdi-navigation-arrow-back left"></i>', 'class' => 'btn waves-effect waves-light fullsize light-blue lighten-1'));?>
-        </div>
+<div class="section">
+	<div class="container">
+	    <div class="row">
+	        <div class="l12 s12">
+	            <h1 class="header center white-text lighten-1 accent-3">Webbooks</h1>
+	            
+	        </div>
+	    </div>
 	</div>
-	<?php if($anzahlwebbooks < 1) : ?>
-		<div class="row">
-			<h3 class="white-text center">Sie haben aktuell keine Webbooks.</h3>
+</div>
+<div class="divider"></div>
+<?php if($anzahlprojekte < 1) : ?>
+	<div class="section">
+		<div class="container">
+				<div class="row marginNull">
+					<p class="white-text">Sie habe noch keine Projekte angelegt. Um ein Webbook erstellen zu können, muss mindestens ein Projekt angelegt werden, dem das zu erstellende Webbook zugewiesen werden kann.</p>
+				</div>
 		</div>
-	<?php endif; ?>
+	</div>
+	<div class="divider"></div>
+<?php endif; ?>
+<div class="section">
+	<div class="container">
+		<div class="row marginNull">
+			<div class="col s12 m12 l6">
+	            <?=Tag::linkTo(array("/center", 'Zum Management Center<i class="mdi-navigation-arrow-back left"></i>', 'class' => 'btn waves-effect waves-light fullsize light-blue lighten-1'));?>
+	        </div>
+	        <div class="col s12 m12 l6">
+	        	<?=Tag::linkTo(array("webbook/new", 'Webbook erstellen<i class="material-icons right">add</i>', 'class' => 'btn waves-effect waves-light fullsize light-blue lighten-1'));?>
+	        </div>
+		</div>
+	</div>
+</div>
+<div class="divider"></div>
+<div class="section">
+	<div class="container">
+		<?php if($anzahlwebbooks < 1) : ?>
+			<div class="row">
+				<h3 class="white-text center">Sie haben aktuell keine Webbooks.</h3>
+			</div>
+		<?php else : ?>
+			<div class="row">
+				<h3 class="white-text center">Webbooks - Übersicht</h3>
+			</div>
+			<div class="row">
+					<?php $i = 1; ?>
+				 <ul class="collapsible popout" data-collapsible="accordion" id="webbookColls">
+					<?php foreach($webbook as $w) : ?>
+						<li>
+							<div class="collapsible-header">
+								<i class="material-icons">folder</i>
+								<?php echo $w->title; ?>
+								<?php echo $w->active == 1 ? '<span class"webbookstatus"><i class="mdi-action-done-all"></i></span>' : '<span class="webbookstatus"><i class="mdi-action-done"></i></span>'; ?>
+								<span class="right"><strong>Projekt:</strong> <?php  echo $projekte[$w->project_id]->title; ?></span>
+							</div>
+							<div class="collapsible-body">
+								<div class="container">
+									<div class="row">
+										<table class="bordered">
+											<th><strong>Nr.</strong></th>
+											<th><strong>Title</strong></th>
+											<th><strong>Aktiv</strong></th>
+											<th><strong>Freigabe</strong></th>
+											<th>Bearbeitung</th>
+											<tr>
+												<td><?php echo $i; ?></td>
+												<td><?php echo $w->title; ?></td>
+												<td>
+													<?php echo $w->active == 0 ? '<span class="pink-text text-darken-3">Nein</span>' : '<span class="teal-text text-accent-2">Ja</span>'; ?>
+												</td>
+												<td><?php echo $w->convert_confirmed == 0 ? 'Nein' : 'Ja'; ?></td>
+												<td><?php echo $w->processing == 0 ? 'Nein' : 'Ja'; ?></td>
+											</tr>
+											<tr>
+                                                <td colspan="2">Pdf (Original)</td>
+                                                <td colspan="3">
+                                                    <?php
+                                                        $pdfpath = implode("/", array_reverse(array_slice(array_reverse(explode("/", $w->pdfpath)), 0, 4)));
+                                                    ?>
+                                                    <a href="<?php echo "http://" . $_SERVER['SERVER_NAME']."/".$pdfpath; ?>" title="Original Pdf für <?php echo $w->title; ?>" target="blank">
+                                                        Klicken Sie hier, um die Original Datei anzusehen.
+                                                    </a>
+                                                </td>
+                                            </tr>
+                                            <?php if($w->active == 1) : ?>
+                                                <tr>
+                                                    <td colspan="2">WebBook-Link</td>
+                                                    <td colspan="3">
+                                                        <a href="<?php echo $w->full_link; ?>" title="WebBook: <?php echo $w->title; ?>" target="_blank">WebBook: <?php echo $w->title; ?></a>
+                                                    </td>
+                                                </tr>
+                                            <?php endif; ?>
+										</table>
+									</div>
+									<div class="row">
+                                        <div class="col s12 m6 l6">
+                                            <a class="btn waves-effect waves-light fullsize light-blue lighten-1">Ticket erstellen<i class="material-icons left">email</i></a>
+                                        </div>
+
+                                        <div class="col s12 m6 l6">
+                                            <?php if($w->convert_confirmed == 0) : ?>
+
+                                            <?=Tag::linkTo(array("webbook/allowConvert/".$w->id, 'WebBook erstellen<i class="mdi-navigation-arrow-forward right"></i>', "class" => "btn waves-effect waves-light fullsize light-blue lighten-1 modal-trigger"));?>
+
+                                            <?php else : ?>
+                                                <a class="btn fullsize disabled">Webbook erstellen<i class="mdi-action-done right"></i></a>
+                                            <?php endif; ?>
+                                        </div>
+                                    </div>
+								</div>
+							</div>
+						</li>
+					<?php $i++; ?>
+					<?php endforeach; ?>
+				</ul>
+			</div>
+		<?php endif; ?>
+	</div>
+</div>
+<div class="divider"></div>
+<div class="section">
+	<div class="container">
+		<div class="row">
+			<h4 class="white-text">FAQs - Webbooks</h4>
+		</div>
+		<div class="row">
+			<ul class="collapsible accordionBlue" data-collapsible="accordion">
+				<li>
+					<div class="collapsible-header"><i class="material-icons">
+settings_input_component</i>Webbooks & Projekte</div>
+					<div class="collapsible-body blue lighten-5"><p>Lorem ipsum dolor sit amet.</p></div>
+				</li>
+				<li>
+					<div class="collapsible-header"><i class="material-icons">arrow_forward</i>Webbook erstellen</div>
+					<div class="collapsible-body blue lighten-5"><p>Lorem ipsum dolor sit amet.</p></div>
+				</li>
+				<li>
+					<div class="collapsible-header"><i class="material-icons">email</i>Ticket erstellen</div>
+					<div class="collapsible-body blue lighten-5"><p>Lorem ipsum dolor sit amet. Lorem ipsum dolor sit amet.Lorem ipsum dolor sit amet.Lorem ipsum dolor sit amet.</p></div>
+				</li>
+				<li>
+					<div class="collapsible-header"><i class="material-icons">delete</i>Webbook löschen</div>
+					<div class="collapsible-body blue lighten-5"><p>Lorem ipsum dolor sit amet.</p></div>
+				</li>
+			</ul>
+		</div>
+	</div>
 </div>

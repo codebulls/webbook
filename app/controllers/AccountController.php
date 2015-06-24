@@ -23,9 +23,8 @@ class AccountController extends ControllerBase
 
 	public function createAction($tariff)
 	{
-		$users = User::find();
+        $users = User::find();
         $id = $users->getLast();
-
         $user_id = User::findFirstById($id->id);
         $account = new Account();
         $account->tariff_id = $tariff;
@@ -37,7 +36,6 @@ class AccountController extends ControllerBase
         $account->user_deactivate_confirm = 0;
         $account->deleted = 0;
         $account->hidden = 0;
-
         $result = $account->create();
 
         if(!$result) {

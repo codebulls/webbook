@@ -33,6 +33,7 @@ class NotFoundPlugin extends Plugin
 					return false;
 			}
 		}
+
 		//!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
 		$dispatcher->forward(array(
 			'controller' => 'errors',

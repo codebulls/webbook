@@ -57,7 +57,7 @@ class SecurityPlugin extends Plugin
 			$customerResources = array(
 				'user'    => array('index', 'update', 'edit'),
 				'account'     => array('index', 'edit', 'update'),
-				'webbook' => array('index', 'new', 'edit', 'save', 'create', 'delete'),
+				'webbook' => array('index', 'new', 'edit', 'save', 'create', 'checkFormData', 'delete'),
 				'project' => array('index', 'new', 'create', 'edit', 'update'),
 				'center' => array('index')
 			);

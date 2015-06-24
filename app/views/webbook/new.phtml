@@ -1,0 +1,93 @@
+<?php
+use Phalcon\Mvc\Url;
+use \Phalcon\Tag as Tag;
+$url = new Url();
+?>
+<div class="section">
+	<div class="container">
+	    <div class="row">
+	        <div class="l12 s12">
+	            <h1 class="header center white-text lighten-1 accent-3">Webbook erstellen</h1>
+	            
+	        </div>
+	    </div>
+	</div>
+</div>
+<div class="divider"></div>
+<div class="section">
+	<div class="container">
+		<div class="row marginNull">
+			<div class="col s12 m12 l12">
+	            <?=Tag::linkTo(array("webbook", 'Zurück zur Übersicht<i class="mdi-navigation-arrow-back left"></i>', 'class' => 'btn waves-effect waves-light fullsize light-blue lighten-1'));?>
+	        </div>
+	    </div>
+	</div>
+</div>
+<div class="divider"></div>
+<div class="section">
+	<div class="container">
+		<div class="row">
+			<h5 class="white-text center">Füllen Sie alle Felder aus!</h5>
+		</div>
+		 <form action="/webbook/create/" enctype="multipart/form-data" name="pdfform" id="pdfform" method="post">
+	        <div class="row">
+	            <div class="input-field col s12 l12 m12">
+	            <select name="project" id="project">
+	                <option value="" disabled selected>Bitte aushwählen</option>
+	                <?php foreach ($projects as $p): ?>
+	                    <option value="<?=$p->id?>"><?=$p->title?></option>
+	                <?php endforeach; ?>
+	            </select>
+	            <label for="project">Projekt Auswahl: bitte wählen Sie ein Projekt aus.</label>
+	        </div>
+	        </div>
+	        <div class="row">
+	            <div class="input-field col s12 m12 l12">
+	                <input name="pdfname" id="pdfname" type="text" class="validate" />
+	                <label for="pdfname">Titel des WebBooks</label>
+	            </div>
+	        </div>
+	        <div class="row">
+	            <div class="col s12 m12 l12">
+	                <div class="file-field input-field">
+	                    <input class="file-path validate" id="pdfinput" type="text"/>
+	                    <div class="btn waves-effect waves-light light-blue lighten-1">
+	                        <span>Pdf <i class="mdi-file-file-upload"></i></span>
+	                        <input type="file" name="pdffile" id="pdffile" />
+	                    </div>
+	                </div>
+	            </div>
+	        </div> 
+	        <div class="row">
+	            <div class="input-field col s12 m12 l6">
+	                    <a class="btn waves-effect waves-light fullsize light-blue lighten-1" id="clearWebbookForm" name="clearWebbookForm">
+	                        Formular leeren
+	                        <i class="mdi-action-delete right"></i>
+	                    </a>
+	                </div>
+	                <div class="input-field col s12 m12 l6">
+	                    <button class="btn waves-effect waves-light fullsize light-blue lighten-1" type="button" id="checkPdfData" name="action" value="register">Daten prüfen
+	                        <i class="mdi-content-send right"></i>
+	                    </button>
+	                </div>
+	                <a id="formConfirmTrigger" class="modal-trigger" href="#confirmationData">Data Confirmation</a>
+	                <div id="confirmationData" class="modal">
+	                    <div class="modal-content">
+	                        <h4>Datenüberprüfung abgeschlossen!</h4>
+	                        <p>Ihre Daten wurden auf korrekte Eingabe überprüft. Nun können Sie diese Speichern und zum nächsten Schritt gehen.</p>
+	                        <p>Klicken Sie dazu einfach auf den Button <strong>"Speichern und weiter"</strong>.</p>
+	                    </div>
+	                    <div class="modal-footer">
+	                        <a href="#!" class=" modal-action modal-close waves-effect waves-green btn-flat">Schließen</a>
+	                    </div>
+	                </div>
+	                <a id="failedConfirm" class="modal-trigger" href="#confirmationNotOk">Confirmation Failed</a>
+	                <div id="confirmationNotOk" class="modal">
+	                    <div class="modal-content">
+	                        Hidden Content
+	                    </div>
+	                </div>
+	        </div>
+	    </form>
+	</div>
+</div>

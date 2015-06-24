@@ -3,79 +3,154 @@ use Phalcon\Mvc\Url;
 use \Phalcon\Tag as Tag;
 $url = new Url();
 ?>
-<div class="container">
-    <div class="row">
-        <div class="l12 s12">
-            <h1 class="header center white-text lighten-1 accent-3">Projekte</h1>
-        </div>
-    </div>
+<div class="section">
+	<div class="container">
+	    <div class="row">
+	        <div class="l12 s12">
+	            <h1 class="header center white-text lighten-1 accent-3">Projekte</h1>
+	        </div>
+	    </div>
+	</div>
 </div>
-<div class="container">
-	<div class="row">
-		<?php if($anzahlprojekte != 0) : ?>
-			 <table class="bordered responsive-table">
-		        <tr>
-		            <th class="white-text grey darken-2">Nr</th>
-		            <th class="white-text grey darken-2">Titel</th>
-		            <th class="white-text grey darken-2">Webseite</th>
-		            <th class="white-text grey darken-2 center">Anzahl WebBooks</th>
-		            <th class="white-text grey darken-2">Aktionen</th>
-		        </tr>
-		        <?php $counter = 1; ?>
-		        <?php foreach ($projects as $project): ?>
-		            <tr>
-		                <td class="white-text"><?php echo $counter; ?></td>
-		                <td class="white-text"><?=$project->title;?></td>
-		                <td class="white-text"><?=$project->weburl;?></td>
-		                <td class="white-text center">
-		                  <?php
-		                  	if(Webbook::getcount($project->id) == 0)
-		                  	{
-		                  		echo '<span class="roundLink">'.Webbook::getcount($project->id).'</span>';
-		                  	}
-		                  	else
-		                  	{
-		                  		echo '<a href="#"><span class="roundLink">'.Webbook::getcount($project->id).'</span></a>';
-		                  	}      
-		                  ?>
-		                </td>
-		                <td>
-		                    <div class="row">
-		                        <div class="col s12 m12 l12">
-			                        <a class="btn waves-effect waves-light fullsize light-blue lighten-1 modal-trigger" href="#ep-<?=$project->id?>">
-						                <i class="material-icons">edit</i>
-						            </a>
-						            <div id="ep-<?=$project->id?>" class="modal">
-						                <div class="modal-content">
-							                <h4>Projekt bearbeiten</h4>
-				                            <form id="newproject" name="newproject" action="/project/update/<?php echo $project->id; ?>" method="post">
-				                                <div class="input-field col s12 m12 l12">
-				                                    <i class="mdi-editor-format-size prefix"></i>
-				                                    <input id="projecttitle" name="projecttitle" type="text" class="validate" value="<?=$project->title;?>" />
-				                                    <label for="projecttitle">Projekt-Titel</label>
-				                                </div>
-				                                <div class="input-field col s12 m12 l12">
-				                                    <i class="mdi-editor-insert-link prefix"></i>
-				                                    <input id="projecturl" name="projecturl" type="text" class="validate" value="<?=$project->weburl;?>" />
-				                                    <label for="projecturl">Projekt-Webseite</label>
-				                                </div>
-				                                <button class="btn waves-effect waves-light fullsize light-blue lighten-1" type="submit" id="createDirect" name="action" value="proupdate">Projekt speichern
-				                                    <i class="mdi-content-send right"></i>
-				                                </button>
-				                            </form>
-				                        	<div class="modal-footer">
-				                            	<a href="#!" class=" modal-action modal-close waves-effect waves-red btn-flat">Schließen</a>
-				                        	</div>
+<div class="divider"></div>
+<div class="section">
+	<div class="container">
+	    <div class="row marginNull">
+			<div class="col s12 m12 l6">
+	            <?=Tag::linkTo(array("/center", 'Zum Management Center<i class="mdi-navigation-arrow-back left"></i>', 'class' => 'btn waves-effect waves-light fullsize light-blue lighten-1'));?>
+	        </div>
+	        <div class="col s12 m12 l6">
+	        	<a class="btn waves-effect waves-light fullsize light-blue lighten-1 modal-trigger" href="#addpro">
+	                Projekt hinzufügen<i class="material-icons right">add</i>
+	            </a>
+	        	<div id="addpro" class="modal">
+	                <div class="modal-content">
+		                <h4>Projekt hinzufügen</h4>
+	                    <form id="newproject" name="newproject" action="/project/create" method="post">
+	                        <div class="input-field col s12 m12 l12">
+	                            <i class="mdi-editor-format-size prefix"></i>
+	                            <input id="projecttitle" name="projecttitle" type="text" class="validate" />
+	                            <label for="projecttitle">Projekt-Titel</label>
+	                        </div>
+	                        <div class="input-field col s12 m12 l12">
+	                            <i class="mdi-editor-insert-link prefix"></i>
+	                            <input id="projecturl" name="projecturl" type="text" class="validate" />
+	                            <label for="projecturl">Projekt-Webseite</label>
+	                        </div>
+	                        <button class="btn waves-effect waves-light fullsize light-blue lighten-1" type="submit" id="createDirect" name="action" value="procreate">Projekt hinzufügen
+	                            <i class="material-icons right">done</i>
+	                        </button>
+	                    </form>
+	                	<div class="modal-footer">
+	                    	<a href="#!" class=" modal-action modal-close waves-effect waves-red btn-flat">Schließen</a>
+	                	</div>
+	                </div>
+	            </div>
+	        </div>
+		</div>
+	</div>
+</div>
+<div class="divider"></div>
+<div class="section">
+	<div class="container">
+		<div class="row">
+			<?php if($anzahlprojekte == 0) : ?>
+				<h5 class="white-text center">Sie haben aktuell keine Projekte angelegt.</h5>
+			<?php else : ?>
+				<h5 class="white-text center">Ihre Projekt-Liste</h5>
+			<?php endif; ?>	
+		</div>
+		<div class="row">
+			<?php if($anzahlprojekte != 0) : ?>
+				 <table class="bordered responsive-table">
+			        <tr>
+			            <th class="white-text grey darken-2">Nr</th>
+			            <th class="white-text grey darken-2">Titel</th>
+			            <th class="white-text grey darken-2">Webseite</th>
+			            <th class="white-text grey darken-2 center">Anzahl WebBooks</th>
+			            <th class="white-text grey darken-2 center">Aktionen</th>
+			        </tr>
+			        <?php $counter = 1; ?>
+			        <?php foreach ($projects as $project): ?>
+			            <tr>
+			                <td class="white-text"><?php echo $counter; ?></td>
+			                <td class="white-text"><?=$project->title;?></td>
+			                <td class="white-text"><?=$project->weburl;?></td>
+			                <td class="white-text center">
+			                	<?php if(Webbook::getcount($project->id) == 0) : ?>
+			                		<a class="btn-floating center disabled"><span class="wbCounter"><?php echo Webbook::getcount($project->id); ?></span></a>';
+			                	<?php else : ?>
+			                  		<a class="btn-floating center teal accent-2 modal-trigger" href="#showBooks<?php echo $project->id;?>"><span class="wbCounter black-text"><?php echo Webbook::getcount($project->id);?></span></a>
+			                  		<div id="showBooks<?php echo $project->id; ?>" class="modal bottom-sheet">
+								    <div class="modal-content left-align">
+										<ul class="collection">
+											<?php $webbooks = Webbook::getprojectwebbooks($project->id); $wi = 1; ?>
+											<?php foreach($webbooks as $w) : ?>
+												<li class="collection-item avatar">
+													<i class="material-icons circle light-blue lighten-1">folder</i>
+													<span class="title black-text"><?php echo $w->title; ?></span>
+													<?php
+                                                        $pdfpath = implode("/", array_reverse(array_slice(array_reverse(explode("/", $w->pdfpath)), 0, 4)));
+                                                    ?>
+													<p><a href="<?php echo "http://" . $_SERVER['SERVER_NAME']."/".$pdfpath; ?>" title="Original Pdf für <?php echo $w->title; ?>" target="blank">Link zur Pdf</a><br>
+													<?php if($w->active == 1) : ?>
+														<a href="#">Link zum Webbook</a></p>
+													<?php else : ?>
+														<span class="blue-grey-text text-lighten-2">Noch kein Webbook vorhanden</span>
+													<?php endif; ?>
+												</li>
+												<?php $wi++; ?>
+											<?php endforeach; ?>
+										</ul>
+								    </div>
+								    <div class="modal-footer">
+								      <a href="#!" class=" modal-action modal-close waves-effect waves-red btn-flat">Schließen</a>
+								    </div>
+								  </div>
+			                  	<?php endif; ?>
+			                </td>
+			                <td>
+			                    <div class="row">
+			                        <div class="col l6 center">
+				                        <a class="btn-floating waves-effect waves-light light-blue lighten-1 modal-trigger" href="#ep-<?=$project->id?>">
+							                <i class="material-icons">edit</i>
+							            </a>
+							            <div id="ep-<?=$project->id?>" class="modal">
+							                <div class="modal-content">
+								                <h4>Projekt bearbeiten</h4>
+					                            <form id="newproject" name="newproject" action="/project/update/<?php echo $project->id; ?>" method="post">
+					                                <div class="input-field col s12 m12 l12">
+					                                    <i class="mdi-editor-format-size prefix"></i>
+					                                    <input id="projecttitle" name="projecttitle" type="text" class="validate" value="<?=$project->title;?>" />
+					                                    <label for="projecttitle">Projekt-Titel</label>
+					                                </div>
+					                                <div class="input-field col s12 m12 l12">
+					                                    <i class="mdi-editor-insert-link prefix"></i>
+					                                    <input id="projecturl" name="projecturl" type="text" class="validate" value="<?=$project->weburl;?>" />
+					                                    <label for="projecturl">Projekt-Webseite</label>
+					                                </div>
+					                                <button class="btn waves-effect waves-light fullsize light-blue lighten-1" type="submit" id="createDirect" name="action" value="proupdate">Projekt speichern
+					                                    <i class="material-icons right">done</i>
+					                                </button>
+					                            </form>
+					                        	<div class="modal-footer">
+					                            	<a href="#!" class=" modal-action modal-close waves-effect waves-red btn-flat">Schließen</a>
+					                        	</div>
+					                        </div>
 				                        </div>
-			                        </div>
-						            </div>
-		                        </div>
-		                    </div>
-		                </td>
-		            </tr>
-		            <?php $counter++; ?>
-		        <?php endforeach; ?>
-		    </table>
-		<?php endif; ?>
+							        </div>
+							        <div class="col l6 center">
+							        	<a class="btn-floating waves-effect waves-light light-blue lighten-1 modal-trigger" href="#dp-<?=$project->id?>">
+							                <i class="material-icons">delete</i>
+							            </a>
+							        </div>
+			                    </div>
+			                </td>
+			            </tr>
+			            <?php $counter++; ?>
+			        <?php endforeach; ?>
+			    </table>
+			<?php endif; ?>
+		</div>
 	</div>
 </div>

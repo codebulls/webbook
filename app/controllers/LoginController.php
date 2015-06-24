@@ -37,7 +37,9 @@ class LoginController extends ControllerBase
 					'bind' => array('email' => $email)
 				));
 
-				
+				$ca = "user_id = ".$user->id;
+				$account = Account::findFirst(array($ca));
+
 				if(password_verify($password, $user->password) != false)
 				{
 					if($user->user_group == 2)
@@ -49,11 +51,18 @@ class LoginController extends ControllerBase
 							"params" => array('uid' => $user->id)
 						));
 					}
-					else
+					elseif($user->user_group == 1 && $account->active == 1)
 					{
 						$this->_registerCustomerSession($user);
 						return $this->dispatcher->forward(array(
 							"controller" => "center",
+							"action" => "index"
+						));
+					}
+					else
+					{
+						return $this->dispatcher->forward(array(
+							"controller" => "login",
 							"action" => "index"
 						));
 					}

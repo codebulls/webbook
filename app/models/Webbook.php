@@ -10,9 +10,15 @@ class Webbook extends BaseModel
         $this->belongsTo('project_id', 'Project', 'id');
     }
 
-    public function getcount($pid)
+    public static function getcount($pid)
     {
     	$webbooks = Webbook::find("project_id=".$pid);
     	return count($webbooks);
+    }
+
+    public static function getprojectwebbooks($pid)
+    {
+        $webbooks = Webbook::find("project_id = ".$pid);
+        return $webbooks;
     }
 }

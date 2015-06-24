@@ -94,7 +94,32 @@ use \Phalcon\Tag as Tag;
 			    </nav>
 			<?php } ?>
 
-        <?=$this->getContent();?>
+        <main><?=$this->getContent();?></main>
+        <footer class="page-footer sticky-footer light-blue lighten-1">
+          <div class="container">
+            <div class="row">
+              <div class="col l6 s12">
+                <h5 class="white-text">WebBook Generator</h5>
+                <p class="grey-text text-lighten-4">Eine Entwicklung und ein Produkt der B|FACTOR GmbH.</p>
+              </div>
+              <div class="col l4 offset-l2 s12 right-align">
+                <h5 class="white-text">Rechtliches</h5>
+                <ul>
+                  <li><a class="grey-text text-lighten-3" href="#!">AGB</a></li>
+                  <li><a class="grey-text text-lighten-3" href="#!">Impressum</a></li>
+                  <li><a class="grey-text text-lighten-3" href="#!">Datenschutz</a></li>
+                  <li><a class="grey-text text-lighten-3" href="#!">Widerrufsbelehrung</a></li>
+                </ul>
+              </div>
+            </div>
+          </div>
+          <div class="footer-copyright light-blue lighten-3">
+            <div class="container">
+            <span class="black-text">© 2015 WebBook Generator</span>
+            <a class="black-text right" href="#!">Powered by B|FACTOR</a>
+            </div>
+          </div>
+        </footer>
         <?php
 		    echo $this->tag->javascriptInclude("js/jquery.min.js");
 		    echo $this->tag->javascriptInclude("js/materialize.min.js");
