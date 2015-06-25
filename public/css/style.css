@@ -11,10 +11,28 @@ body {
 main {
     flex: 1 0 auto;
   }
-      
+
+.floatRight {
+    float:right;
+}
+
 .accordionBlue .active .collapsible-header {
   background: #29B6F6;
   color: #fff;
+}
+
+.accordionTK .collapsible-header {
+    background: #fff!important;
+    color: #000!important;
+}
+
+.accordionTK .active .collapsible-header i {
+    color: #fff!important;
+}
+
+.accordionTK .active .collapsible-header {
+    background: #29B6F6!important;
+    color: #fff!important;
 }
 
 .marginNull {
@@ -102,11 +120,11 @@ main .dropdown-content {
    .input-field label {
      color: #ccc;
    }
-   
+
    .row .darkfont .prefix {
         color:#000;
    }
-   
+
    .row .darkfont label {
      color: #000;
    }
@@ -141,11 +159,11 @@ main .dropdown-content {
      border-bottom: 1px solid #000;
      box-shadow: 0 1px 0 0 #000;
    }
-   
+
    .with-gap[type="radio"]:not(:checked) + label::before {
         border: 2px solid #fff;
    }
-   
+
    .with-gap[type="radio"]:checked + label::before {
         border: 2px solid #29B6F6;
    }
@@ -153,41 +171,41 @@ main .dropdown-content {
     background-color: #29B6F6;
     border: 2px solid #29B6F6;
    }
-   
+
    .picker__date-display {
     background-color: #29B6F6;
    }
-   
+
    .picker__close, .picker__today {color:#29B6F6;}
-   
+
    .picker__weekday-display, .picker__day--selected, .picker__day--selected:hover, .picker--focused .picker__day--selected {
     background-color: #2AACE7;
     color:#333;
    }
-   
+
    .select-dropdown .dropdown-content li a, .dropdown-content li > span {
         color: #29B6F6;
    }
-   
+
    .input-field input[type="checkbox"] + label::before {
         border-color: #fff;
    }
    .input-field input[type="checkbox"]:checked + label::before {
         border-color: transparent #fff #fff transparent;
    }
-   
+
    .input-field input[type=select]:focus, .input-field input[type=select]:active  {
         color: #29B6F6;
    }
-   
+
    .inRadioRange input[type="radio"]:checked  {
         color: #29B6F6;
    }
-   
+
    .input-field .prefix {
         color:#fff;
    }
-   
+
    /* icon prefix focus color */
    .input-field .prefix.active {
      color: #29B6F6;

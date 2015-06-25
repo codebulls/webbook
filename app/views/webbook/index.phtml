@@ -8,7 +8,7 @@ $url = new Url();
 	    <div class="row">
 	        <div class="l12 s12">
 	            <h1 class="header center white-text lighten-1 accent-3">Webbooks</h1>
-	            
+
 	        </div>
 	    </div>
 	</div>
@@ -28,7 +28,7 @@ $url = new Url();
 	<div class="container">
 		<div class="row marginNull">
 			<div class="col s12 m12 l6">
-	            <?=Tag::linkTo(array("/center", 'Zum Management Center<i class="mdi-navigation-arrow-back left"></i>', 'class' => 'btn waves-effect waves-light fullsize light-blue lighten-1'));?>
+	            <?=Tag::linkTo(array("/center", 'Zum Management Center<i class="material-icons left">home</i>', 'class' => 'btn waves-effect waves-light fullsize light-blue lighten-1'));?>
 	        </div>
 	        <div class="col s12 m12 l6">
 	        	<?=Tag::linkTo(array("webbook/new", 'Webbook erstellen<i class="material-icons right">add</i>', 'class' => 'btn waves-effect waves-light fullsize light-blue lighten-1'));?>
@@ -54,8 +54,11 @@ $url = new Url();
 						<li>
 							<div class="collapsible-header">
 								<i class="material-icons">folder</i>
+								<?php if(Webbook::getticketcounter($w->id) > 0) : ?>
+									<i class="material-icons">email</i>
+								<?php endif; ?>
 								<?php echo $w->title; ?>
-								<?php echo $w->active == 1 ? '<span class"webbookstatus"><i class="mdi-action-done-all"></i></span>' : '<span class="webbookstatus"><i class="mdi-action-done"></i></span>'; ?>
+								<?php echo $w->active == 1 ? '<span class"webbookstatus"><i class="material-icons">done_all</i></span>' : '<span class="webbookstatus"><i class="material-icons">done</i></span>'; ?>
 								<span class="right"><strong>Projekt:</strong> <?php  echo $projekte[$w->project_id]->title; ?></span>
 							</div>
 							<div class="collapsible-body">
@@ -77,41 +80,140 @@ $url = new Url();
 												<td><?php echo $w->processing == 0 ? 'Nein' : 'Ja'; ?></td>
 											</tr>
 											<tr>
-                                                <td colspan="2">Pdf (Original)</td>
-                                                <td colspan="3">
-                                                    <?php
-                                                        $pdfpath = implode("/", array_reverse(array_slice(array_reverse(explode("/", $w->pdfpath)), 0, 4)));
-                                                    ?>
-                                                    <a href="<?php echo "http://" . $_SERVER['SERVER_NAME']."/".$pdfpath; ?>" title="Original Pdf für <?php echo $w->title; ?>" target="blank">
-                                                        Klicken Sie hier, um die Original Datei anzusehen.
-                                                    </a>
-                                                </td>
-                                            </tr>
-                                            <?php if($w->active == 1) : ?>
-                                                <tr>
-                                                    <td colspan="2">WebBook-Link</td>
-                                                    <td colspan="3">
-                                                        <a href="<?php echo $w->full_link; ?>" title="WebBook: <?php echo $w->title; ?>" target="_blank">WebBook: <?php echo $w->title; ?></a>
-                                                    </td>
-                                                </tr>
-                                            <?php endif; ?>
+													<td colspan="2">Pdf (Original)</td>
+													<td colspan="3">
+													    <?php
+													        $pdfpath = implode("/", array_reverse(array_slice(array_reverse(explode("/", $w->pdfpath)), 0, 4)));
+													    ?>
+													    <a href="<?php echo "http://" . $_SERVER['SERVER_NAME']."/".$pdfpath; ?>" title="Original Pdf für <?php echo $w->title; ?>" target="blank">
+													        Klicken Sie hier, um die Original Datei anzusehen.
+													    </a>
+													</td>
+													</tr>
+													<?php if($w->active == 1) : ?>
+													<tr>
+													    <td colspan="2">WebBook-Link</td>
+													    <td colspan="3">
+													        <a href="<?php echo $w->full_link; ?>" title="WebBook: <?php echo $w->title; ?>" target="_blank">WebBook: <?php echo $w->title; ?></a>
+													    </td>
+													</tr>
+													<?php endif; ?>
 										</table>
 									</div>
 									<div class="row">
-                                        <div class="col s12 m6 l6">
-                                            <a class="btn waves-effect waves-light fullsize light-blue lighten-1">Ticket erstellen<i class="material-icons left">email</i></a>
-                                        </div>
+                        <div class="col s12 m6 l6">
+                            <a class="btn waves-effect waves-light fullsize light-blue lighten-1 modal-trigger" href="#titlech<?php echo $w->id; ?>">Bearbeiten<i class="material-icons left">edit</i></a>
+														<div id="titlech<?php echo $w->id; ?>" class="modal">
+													    <div class="modal-content">
+													      <h4>Webbook: <strong><?php echo $w->title; ?></strong></h4>
+																<form id="chtitle" name="chtitle" action="/webbook/chwebbook/<?php echo $w->id; ?>" method="post">
+																		<div class="input-field col s12 m12 l12 black-text">
+																				<input id="wbtitle" name="wbtitle" type="text" value="<?php echo $w->title; ?>" class="validate" />
+																				<label for="wbtitle">Webbook-Titel</label>
+																		</div>
+																		<div class="input-field col s12 l12 m12 black-text">
+														            <select name="wbproject" id="wbproject">
+														                <option value="<?php echo $projekte[$w->project_id]->id; ?>" selected><?php  echo $projekte[$w->project_id]->title; ?></option>
+														                <?php foreach ($projekte as $p): ?>
+																								<?php if($p->id == $projekte[$w->project_id]->id) continue; ?>
+														                    <option value="<?=$p->id?>"><?=$p->title?></option>
+														                <?php endforeach; ?>
+														            </select>
+														            <label for="project">Projekt Auswahl: bitte wählen Sie ein Projekt aus.</label>
+														        </div>
 
-                                        <div class="col s12 m6 l6">
-                                            <?php if($w->convert_confirmed == 0) : ?>
+																		<button class="btn waves-effect waves-light fullsize light-blue lighten-1" type="submit" id="createDirect" name="action" value="chwebb">Speichern
+																				<i class="material-icons right">done</i>
+																		</button>
+																</form>
+													    </div>
+													    <div class="modal-footer">
+													      <a href="#!" class="modal-action modal-close waves-effect waves-red btn-flat ">Schließen</a>
+													    </div>
+													  </div>
+                        </div>
 
-                                            <?=Tag::linkTo(array("webbook/allowConvert/".$w->id, 'WebBook erstellen<i class="mdi-navigation-arrow-forward right"></i>', "class" => "btn waves-effect waves-light fullsize light-blue lighten-1 modal-trigger"));?>
+                        <div class="col s12 m6 l6">
+                            <?php if($w->convert_confirmed == 0) : ?>
 
-                                            <?php else : ?>
-                                                <a class="btn fullsize disabled">Webbook erstellen<i class="mdi-action-done right"></i></a>
-                                            <?php endif; ?>
-                                        </div>
-                                    </div>
+                            <?=Tag::linkTo(array("webbook/allowConvert/".$w->id, 'WebBook erstellen<i class="material-icons right">done</i>', "class" => "btn waves-effect waves-light fullsize light-blue lighten-1 modal-trigger"));?>
+
+                            <?php else : ?>
+                                <a class="btn fullsize disabled">Webbook erstellen<i class="material-icons right">done</i></a>
+                            <?php endif; ?>
+                        </div>
+                    </div>
+										<div class="row">
+											<div class="col s12 m12 l6">
+													<a class="btn fullsize waves-effect waves-light light-blue lighten-1 modal-trigger" href="#tktwb<?php echo $w->id; ?>">Ticket erstellen<i class="material-icons left">email</i></a>
+													<div id="tktwb<?php echo $w->id; ?>" class="modal">
+														<div class="modal-content">
+															<h4>Ticket Nr.: <strong><?php echo Webbook::getticketcounternext($user->id); ?></strong></h4>
+															<div class="row">
+																<table class="bordered responsive-table">
+																	<tr>
+																		<td class="black-text"><strong>Webbook:</strong></td>
+																		<td class="black-text"><?php echo $w->title; ?></td>
+																	</tr>
+																	<tr>
+																		<td class="black-text"><strong>Projekt:</strong></td>
+																		<td class="black-text"><?php echo $projekte[$w->project_id]->title; ?></td>
+																	</tr>
+																	<tr>
+																		<td class="black-text"><strong>Kunde/Ansprechpartner:</strong></td>
+																		<td class="black-text"><?php echo $user->firstname.' '.$user->lastname; ?></td>
+																	</tr>
+																</table>
+															</div>
+															<form id="chtitle" name="chtitle" action="/ticket/create/<?php echo $w->id; ?>" method="post">
+																	<div class="input-field col s12 m12 l12 black-text">
+																			<input id="ttitle" name="ttitle" type="text" class="validate" />
+																			<label for="ttitle">Zusammenfassung/Titel</label>
+																	</div>
+																	<div class="input-field col s12 l12 m12 black-text">
+																		<textarea id="tmsg" name="tmsg" class="materialize-textarea"></textarea>
+																		<label for="tmsg">Nachricht/Problem</label>
+																	</div>
+
+																	<button class="btn waves-effect waves-light fullsize light-blue lighten-1" type="submit" id="tcreate" name="action" value="tcreate">Senden
+																			<i class="material-icons right">send</i>
+																	</button>
+															</form>
+														</div>
+														<div class="modal-footer">
+															<a href="#!" class="modal-action modal-close waves-effect waves-red btn-flat ">Schließen</a>
+														</div>
+													</div>
+											</div>
+											<div class="col s12 m12 l6">
+													<a class="btn fullsize waves-effect waves-light light-blue lighten-1 modal-trigger" href="#dlwbb<?php echo $w->id; ?>">Webbook löschen<i class="material-icons right">delete</i></a>
+											</div>
+										</div>
+										<?php if(Webbook::getticketcounter($w->id) > 0) : ?>
+											<div class="divider"></div>
+											<h5 class="black-text center">Tickets zum Webbook: <?=$w->title;?></h5>
+											<div class="row">
+												<ul class="collapsible accordionTK" data-collapsible="accordion">
+													<?php $tickets = Webbook::gettickets($w->id); ?>
+													<?php foreach($tickets as $t) : ?>
+														<li>
+															<div class="collapsible-header">
+																<i class="material-icons black-text">email</i>
+																<?php echo $t->title; ?>
+																<span class="floatRight">Vom: <?php
+																echo date_create($t->created_at)->format('d.m.Y'); ?></span>
+															</div>
+															<div class="collapsible-body blue lighten-5">
+																<p><strong>Titel:</strong> <?php echo $t->title; ?></p>
+																<div class="divider grey darken-2"></div>
+																<p><strong>Nachricht:</strong><br>
+																<?php echo $t->content; ?></p>
+															</div>
+														</li>
+													<?php endforeach; ?>
+												</ul>
+											</div>
+										<?php endif; ?>
 								</div>
 							</div>
 						</li>

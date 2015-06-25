@@ -17,7 +17,7 @@ $url = new Url();
 	<div class="container">
 	    <div class="row marginNull">
 			<div class="col s12 m12 l6">
-	            <?=Tag::linkTo(array("/center", 'Zum Management Center<i class="mdi-navigation-arrow-back left"></i>', 'class' => 'btn waves-effect waves-light fullsize light-blue lighten-1'));?>
+	            <?=Tag::linkTo(array("/center", 'Zum Management Center<i class="material-icons left">home</i>', 'class' => 'btn waves-effect waves-light fullsize light-blue lighten-1'));?>
 	        </div>
 	        <div class="col s12 m12 l6">
 	        	<a class="btn waves-effect waves-light fullsize light-blue lighten-1 modal-trigger" href="#addpro">
@@ -28,12 +28,12 @@ $url = new Url();
 		                <h4>Projekt hinzufügen</h4>
 	                    <form id="newproject" name="newproject" action="/project/create" method="post">
 	                        <div class="input-field col s12 m12 l12">
-	                            <i class="mdi-editor-format-size prefix"></i>
+	                            <i class="material-icons prefix">text_format</i>
 	                            <input id="projecttitle" name="projecttitle" type="text" class="validate" />
 	                            <label for="projecttitle">Projekt-Titel</label>
 	                        </div>
 	                        <div class="input-field col s12 m12 l12">
-	                            <i class="mdi-editor-insert-link prefix"></i>
+	                            <i class="material-icons prefix">link</i>
 	                            <input id="projecturl" name="projecturl" type="text" class="validate" />
 	                            <label for="projecturl">Projekt-Webseite</label>
 	                        </div>
@@ -58,7 +58,7 @@ $url = new Url();
 				<h5 class="white-text center">Sie haben aktuell keine Projekte angelegt.</h5>
 			<?php else : ?>
 				<h5 class="white-text center">Ihre Projekt-Liste</h5>
-			<?php endif; ?>	
+			<?php endif; ?>
 		</div>
 		<div class="row">
 			<?php if($anzahlprojekte != 0) : ?>
@@ -78,7 +78,7 @@ $url = new Url();
 			                <td class="white-text"><?=$project->weburl;?></td>
 			                <td class="white-text center">
 			                	<?php if(Webbook::getcount($project->id) == 0) : ?>
-			                		<a class="btn-floating center disabled"><span class="wbCounter"><?php echo Webbook::getcount($project->id); ?></span></a>';
+			                		<a class="btn-floating center disabled"><span class="wbCounter"><?php echo Webbook::getcount($project->id); ?></span></a>
 			                	<?php else : ?>
 			                  		<a class="btn-floating center teal accent-2 modal-trigger" href="#showBooks<?php echo $project->id;?>"><span class="wbCounter black-text"><?php echo Webbook::getcount($project->id);?></span></a>
 			                  		<div id="showBooks<?php echo $project->id; ?>" class="modal bottom-sheet">

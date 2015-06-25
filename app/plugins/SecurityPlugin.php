@@ -57,7 +57,8 @@ class SecurityPlugin extends Plugin
 			$customerResources = array(
 				'user'    => array('index', 'update', 'edit'),
 				'account'     => array('index', 'edit', 'update'),
-				'webbook' => array('index', 'new', 'edit', 'save', 'create', 'checkFormData', 'delete'),
+				'ticket'	=> array('index', 'create'),
+				'webbook' => array('index', 'new', 'edit', 'save', 'create', 'checkFormData', 'delete', 'chwebbook'),
 				'project' => array('index', 'new', 'create', 'edit', 'update'),
 				'center' => array('index')
 			);
@@ -78,7 +79,7 @@ class SecurityPlugin extends Plugin
 			foreach ($publicResources as $resource => $actions) {
 				$acl->addResource(new Resource($resource), $actions);
 			}
-			
+
 
 			//Grant access to public areas to both users and guests
 			foreach ($roles as $role) {

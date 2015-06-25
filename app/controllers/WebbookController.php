@@ -14,6 +14,9 @@ class WebbookController extends ControllerBase
 		$cForProject = "user_id = ".$this->gUserId();
 		$project = Project::find(array($cForProject));
 
+		$ticket = Ticket::find("user_id = ".$this->gUserId());
+		
+
 		$projekte = array();
 
 		foreach($webbook as $w)
@@ -35,10 +38,37 @@ class WebbookController extends ControllerBase
 	public function newAction()
 	{
 		$projects = Project::find("user_id = ".$this->gUserId());
-		
+
 		$this->view->setVars([
-			'projects' => $projects 
+			'projects' => $projects
 		]);
+	}
+
+	public function chwebbookAction($wid)
+	{
+		if(isset($_POST['action']) && $_POST['action'] == 'chwebb')
+		{
+			$webbook = Webbook::findFirstById($wid);
+
+			if(!empty($_POST['wbtitle']))
+			{
+				$webbook->title = $_POST['wbtitle'];
+			}
+			if(!empty($_POST['wbproject']))
+			{
+				$webbook->project_id = $_POST['wbproject'];
+			}
+
+			$result = $webbook->update();
+
+			if(!$result)
+			{
+				print_r('Fehler!!');
+			}
+			else {
+				$this->response->redirect("webbook");
+			}
+		}
 	}
 
 	public function checkFormDataAction()
@@ -129,6 +159,6 @@ class WebbookController extends ControllerBase
 
     public function deleteAction($wid)
     {
-    	$webbook = Webbook::findFirstById($wid);    	
+    	$webbook = Webbook::findFirstById($wid);
     }
 }

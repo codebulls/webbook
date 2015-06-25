@@ -17,9 +17,9 @@ $url = new Url();
 	<div class="container">
 		<div class="row marginNull">
 			<div class="col s12 m12 l12">
-	            <?=Tag::linkTo(array("center", 'Zum Management Center<i class="mdi-navigation-arrow-back left"></i>', 'class' => 'btn waves-effect waves-light fullsize light-blue lighten-1'));?>
-	        </div>
-	    </div>
+	            <?=Tag::linkTo(array("center", 'Zum Management Center<i class="material-icons left">home</i>', 'class' => 'btn waves-effect waves-light fullsize light-blue lighten-1'));?>
+	  	</div>
+	  </div>
 	</div>
 </div>
 <div class="divider"></div>
@@ -133,6 +133,16 @@ $url = new Url();
 						<td class="teal-text text-accent-2">Aktiviert</td>
 					<?php endif; ?>
 				</tr>
+				<?php if($account->active == 1) : ?>
+					<tr>
+						<td class="white-text"><strong>Aktiv seit:</strong></td>
+						<td class="white-text"><?php echo $account->active_from; ?></td>
+					</tr>
+					<tr>
+						<td class="white-text"><strong>Aktiv bis:</strong></td>
+						<td class="white-text"><?php echo $account->active_untill; ?></td>
+					</tr>
+				<?php endif; ?>
 			</table>
 		</div>
 		<div class="row">

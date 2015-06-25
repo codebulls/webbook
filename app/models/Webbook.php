@@ -21,4 +21,22 @@ class Webbook extends BaseModel
         $webbooks = Webbook::find("project_id = ".$pid);
         return $webbooks;
     }
+
+	public static function getticketcounternext($uid)
+	{
+		$ticket = Ticket::find("user_id = ".$uid);
+		return count($ticket)+1;
+	}
+
+	public static function getticketcounter($wid)
+	{
+		$ticket = Ticket::find("webbook_id = ".$wid);
+		return count($ticket);
+	}
+
+	public static function gettickets($wid)
+	{
+		$tickets = Ticket::find("webbook_id = ".$wid);
+		return $tickets;
+	}
 }
