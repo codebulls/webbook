@@ -15,21 +15,12 @@ class WebbookController extends ControllerBase
 		$project = Project::find(array($cForProject));
 
 		$ticket = Ticket::find("user_id = ".$this->gUserId());
-		
-
-		$projekte = array();
-
-		foreach($webbook as $w)
-        {
-            if(!isset($projekte[$w->project_id])) $projekte[$w->project_id] = Project::findFirst(array("id = ".$w->project_id));
-        }
 
 		$this->view->setVars([
 			'user' => $this->gUser(),
 			'account' => $account,
 			'webbook' => $webbook,
 			'project' => $project,
-			'projekte' => $projekte,
 			'anzahlprojekte' => count($project),
 			'anzahlwebbooks' => count($webbook)
 		]);

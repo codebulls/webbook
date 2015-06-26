@@ -18,7 +18,12 @@ class Webbook extends BaseModel
 
     public static function getprojectwebbooks($pid)
     {
-        $webbooks = Webbook::find("project_id = ".$pid);
+		$webbooks = Webbook::query()
+		    ->where("project_id = ".$pid)
+		    ->limit(4)
+		    ->order("created_at desc")
+		    ->execute();
+
         return $webbooks;
     }
 

@@ -35,7 +35,7 @@ class ProjectController extends ControllerBase
 
 				$result = $project->create();
 
-				if(!$result) 
+				if(!$result)
 				{
 	            	print_r($project->getMessages());
 	            }
@@ -68,7 +68,7 @@ class ProjectController extends ControllerBase
 				}
 
 				$result = $project->update();
-				if(!$result) 
+				if(!$result)
 				{
                 	print_r($customer->getMessages());
 	            }
@@ -79,6 +79,67 @@ class ProjectController extends ControllerBase
 	                   "action"     => "index"
 	                ));
 	            }
+			}
+		}
+	}
+
+	public function deleteAction($pid)
+	{
+		if(isset($_POST['action']) && $_POST['action'] == 'dodelete')
+		{
+			$project = Project::findFirstById($pid);
+			$webbooks = Webbook::find("project_id = ".$pid);
+
+			if(count($webbooks) < 1)
+			{
+				$result = $project->delete();
+				if(!result)
+				{
+					print_r('Fehler beim Löschen eines Projektes');
+				}
+				else
+				{
+					$this->response->redirect("project");
+				}
+			}
+			else
+			{
+				if(!empty($_POST['wids']) && $_POST['delconfirm'] == 'ja')
+				{
+					$wids = array();
+					$wids = explode("/", $_POST['wids']);
+					$errors = array();
+
+					foreach($wids as $K=>$v)
+					{
+						if(!empty($v))
+						{
+							$webbook = Webbook::findFirstById($v);
+							$webbook->project_id = NULL;
+							$result = $webbook->update();
+
+							if(!$result)
+							{
+								$errors[] = $v;
+							}
+						}
+					}
+					if(count($errors) < 1)
+					{
+						$result = $project->delete();
+						if(!$result)
+						{
+							print_r('Fehler beim Löschen 1');
+						}
+						else
+						{
+							$this->response->redirect("project");
+						}
+					}
+					else {
+						print_r('Fehler beim Löschen');
+					}
+				}
 			}
 		}
 	}

@@ -59,7 +59,7 @@ class SecurityPlugin extends Plugin
 				'account'     => array('index', 'edit', 'update'),
 				'ticket'	=> array('index', 'create'),
 				'webbook' => array('index', 'new', 'edit', 'save', 'create', 'checkFormData', 'delete', 'chwebbook'),
-				'project' => array('index', 'new', 'create', 'edit', 'update'),
+				'project' => array('index', 'new', 'create', 'edit', 'update', 'delete'),
 				'center' => array('index')
 			);
 			foreach ($customerResources as $resource => $actions) {

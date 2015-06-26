@@ -59,7 +59,11 @@ $url = new Url();
 								<?php endif; ?>
 								<?php echo $w->title; ?>
 								<?php echo $w->active == 1 ? '<span class"webbookstatus"><i class="material-icons">done_all</i></span>' : '<span class="webbookstatus"><i class="material-icons">done</i></span>'; ?>
-								<span class="right"><strong>Projekt:</strong> <?php  echo $projekte[$w->project_id]->title; ?></span>
+								<?php if(!empty($w->project_id)) : ?>
+									<span class="right"><strong>Projekt:</strong> <?php echo Project::getTitle($w->project_id); ?></span>
+								<?php else: ?>
+									<span class="right"><i class="material-icons red-text text-lighten-1">notifications_active</i></span>
+								<?php endif; ?>
 							</div>
 							<div class="collapsible-body">
 								<div class="container">
@@ -100,49 +104,75 @@ $url = new Url();
 													<?php endif; ?>
 										</table>
 									</div>
+									<?php if(empty($w->project_id)) : ?>
 									<div class="row">
-                        <div class="col s12 m6 l6">
-                            <a class="btn waves-effect waves-light fullsize light-blue lighten-1 modal-trigger" href="#titlech<?php echo $w->id; ?>">Bearbeiten<i class="material-icons left">edit</i></a>
-														<div id="titlech<?php echo $w->id; ?>" class="modal">
-													    <div class="modal-content">
-													      <h4>Webbook: <strong><?php echo $w->title; ?></strong></h4>
-																<form id="chtitle" name="chtitle" action="/webbook/chwebbook/<?php echo $w->id; ?>" method="post">
-																		<div class="input-field col s12 m12 l12 black-text">
-																				<input id="wbtitle" name="wbtitle" type="text" value="<?php echo $w->title; ?>" class="validate" />
-																				<label for="wbtitle">Webbook-Titel</label>
-																		</div>
-																		<div class="input-field col s12 l12 m12 black-text">
-														            <select name="wbproject" id="wbproject">
-														                <option value="<?php echo $projekte[$w->project_id]->id; ?>" selected><?php  echo $projekte[$w->project_id]->title; ?></option>
-														                <?php foreach ($projekte as $p): ?>
-																								<?php if($p->id == $projekte[$w->project_id]->id) continue; ?>
-														                    <option value="<?=$p->id?>"><?=$p->title?></option>
-														                <?php endforeach; ?>
-														            </select>
-														            <label for="project">Projekt Auswahl: bitte wählen Sie ein Projekt aus.</label>
-														        </div>
+										<div class="col s12 m12 l12">
+									        <div class="card-panel center red lighten-4">
+									          <span class="black-text">Bitte ordnen Sie dieses Webbook einem Projekt zu. Klicken Sie hierzu auf den Button "Bearbeiten".</span>
+									        </div>
+									      </div>
+									</div>
+								<?php endif; ?>
+									<div class="row">
+					                        <div class="col s12 m6 l6">
+					                            <a class="btn waves-effect waves-light fullsize light-blue lighten-1 modal-trigger" href="#titlech<?php echo $w->id; ?>">
+													Bearbeiten<i class="material-icons left">edit</i>
+												</a>
+												<div id="titlech<?php echo $w->id; ?>" class="modal">
+											    <div class="modal-content">
+											      <h4>Webbook: <strong><?php echo $w->title; ?></strong></h4>
+													<div class="row">
+														<form id="chtitle" name="chtitle" action="/webbook/chwebbook/<?php echo $w->id; ?>" method="post">
+																<div class="input-field col s12 m12 l12 black-text">
+																		<input id="wbtitle" name="wbtitle" type="text" value="<?php echo $w->title; ?>" class="validate" />
+																		<label for="wbtitle">Webbook-Titel</label>
+																</div>
+																<div class="input-field col s12 l12 m12 black-text">
+												            <select name="wbproject" id="wbproject">
+																<?php if(!empty($w->project_id)) : ?>
+																	<option value="<?php echo Project::getId($w->project_id); ?>" selected><?php echo Project::getTitle($w->project_id); ?></option>
+													                <?php foreach ($project as $p): ?>
+																		<?php if($p->id == Project::getId($w->project_id)) continue; ?>
+													                    <option value="<?=$p->id?>"><?=$p->title?></option>
+													                <?php endforeach; ?>
+																<?php else : ?>
+																	<option disabled selected>Bitte wählen</option>
+																	<?php foreach ($project as $p): ?>
+													                    <option value="<?=$p->id?>"><?=$p->title?></option>
+													                <?php endforeach; ?>
+																<?php endif; ?>
+												            </select>
+												            <label for="project">Projekt Auswahl: bitte wählen Sie ein Projekt aus.</label>
+												        </div>
+													</div>
 
-																		<button class="btn waves-effect waves-light fullsize light-blue lighten-1" type="submit" id="createDirect" name="action" value="chwebb">Speichern
-																				<i class="material-icons right">done</i>
-																		</button>
-																</form>
-													    </div>
-													    <div class="modal-footer">
-													      <a href="#!" class="modal-action modal-close waves-effect waves-red btn-flat ">Schließen</a>
-													    </div>
-													  </div>
-                        </div>
+											    <div class="modal-footer">
+													<div class="row">
+														<div class="col s12 m12 l6">
+															<a class="btn waves-effect fullsize light-blue lighten-1 modal-action modal-close waves-light" href="#!">Schließen <i class="material-icons left">arrow_back</i></a>
+														</div>
+														<div class="col s12 m12 l6">
+															<button class="btn waves-effect waves-light fullsize teal accent-4" type="submit" id="createDirect" name="action" value="chwebb">Speichern
+																	<i class="material-icons right">done</i>
+															</button>
+															</form>
+														</div>
+													</div>
+											    </div>
+												</div>
+											  </div>
+					                        </div>
 
-                        <div class="col s12 m6 l6">
-                            <?php if($w->convert_confirmed == 0) : ?>
+					                        <div class="col s12 m6 l6">
+					                            <?php if($w->convert_confirmed == 0) : ?>
 
-                            <?=Tag::linkTo(array("webbook/allowConvert/".$w->id, 'WebBook erstellen<i class="material-icons right">done</i>', "class" => "btn waves-effect waves-light fullsize light-blue lighten-1 modal-trigger"));?>
+					                            <?=Tag::linkTo(array("webbook/allowConvert/".$w->id, 'WebBook erstellen<i class="material-icons right">done</i>', "class" => "btn waves-effect waves-light fullsize light-blue lighten-1 modal-trigger"));?>
 
-                            <?php else : ?>
-                                <a class="btn fullsize disabled">Webbook erstellen<i class="material-icons right">done</i></a>
-                            <?php endif; ?>
-                        </div>
-                    </div>
+					                            <?php else : ?>
+					                                <a class="btn fullsize disabled">Webbook erstellen<i class="material-icons right">done</i></a>
+					                            <?php endif; ?>
+					                        </div>
+					                    </div>
 										<div class="row">
 											<div class="col s12 m12 l6">
 													<a class="btn fullsize waves-effect waves-light light-blue lighten-1 modal-trigger" href="#tktwb<?php echo $w->id; ?>">Ticket erstellen<i class="material-icons left">email</i></a>

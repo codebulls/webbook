@@ -237,8 +237,8 @@ main .dropdown-content {
 }
 
 #pdfinput {
-    margin-left: 125px;
-    width: calc(100% - 125px);
+    /*margin-left: 125px;
+    width: calc(100% - 125px);*/
 }
 
 #webbookColls .active i {
