@@ -16,6 +16,10 @@ main {
     float:right;
 }
 
+.wd25 {
+  width: 25px;
+}
+
 .accordionBlue .active .collapsible-header {
   background: #29B6F6;
   color: #fff;

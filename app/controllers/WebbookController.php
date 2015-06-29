@@ -152,4 +152,24 @@ class WebbookController extends ControllerBase
     {
     	$webbook = Webbook::findFirstById($wid);
     }
+
+		public function acontrueAction($wid)
+		{
+			$this->view->disable();
+			if(!empty($wid) && is_numeric($wid))
+			{
+				$webbook = Webbook::findFirstById($wid);
+				$webbook->convert_confirmed = 1;
+				$result = $webbook->update();
+
+				if(!$result)
+				{
+					print_r('Fehler!!!');
+				}
+				else
+				{
+					$this->response->redirect("webbook");
+				}
+			}
+		}
 }

@@ -58,7 +58,15 @@ $url = new Url();
 									<i class="material-icons">email</i>
 								<?php endif; ?>
 								<?php echo $w->title; ?>
-								<?php echo $w->active == 1 ? '<span class"webbookstatus"><i class="material-icons">done_all</i></span>' : '<span class="webbookstatus"><i class="material-icons">done</i></span>'; ?>
+								<?php if($w->active == 1) : ?>
+							 		<span class"webbookstatus"><i class="material-icons">done_all</i></span>
+								<?php endif; ?>
+								<?php if($w->convert_confirmed == 1) : ?>
+									<span class="webbookstatus"><i class="material-icons">done</i></span>
+								<?php endif; ?>
+								<?php if($w->processing == 1) : ?>
+									<span class="webbookstatus"><i class="material-icons">settings</i></span>
+								<?php endif; ?>
 								<?php if(!empty($w->project_id)) : ?>
 									<span class="right"><strong>Projekt:</strong> <?php echo Project::getTitle($w->project_id); ?></span>
 								<?php else: ?>
@@ -164,9 +172,9 @@ $url = new Url();
 					                        </div>
 
 					                        <div class="col s12 m6 l6">
-					                            <?php if($w->convert_confirmed == 0) : ?>
+					                            <?php if($w->convert_confirmed == 0 && $w->processing == 0) : ?>
 
-					                            <?=Tag::linkTo(array("webbook/allowConvert/".$w->id, 'WebBook erstellen<i class="material-icons right">done</i>', "class" => "btn waves-effect waves-light fullsize light-blue lighten-1 modal-trigger"));?>
+					                            <?=Tag::linkTo(array("webbook/acontrue/".$w->id, 'WebBook erstellen<i class="material-icons right">done</i>', "class" => "btn waves-effect waves-light fullsize teal accent-4 modal-trigger"));?>
 
 					                            <?php else : ?>
 					                                <a class="btn fullsize disabled">Webbook erstellen<i class="material-icons right">done</i></a>
@@ -187,7 +195,7 @@ $url = new Url();
 																	</tr>
 																	<tr>
 																		<td class="black-text"><strong>Projekt:</strong></td>
-																		<td class="black-text"><?php echo $projekte[$w->project_id]->title; ?></td>
+																		<td class="black-text"><?php if(!empty($w->project_id)) { echo Project::getTitle($w->project_id); } ?></td>
 																	</tr>
 																	<tr>
 																		<td class="black-text"><strong>Kunde/Ansprechpartner:</strong></td>

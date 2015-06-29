@@ -26,6 +26,7 @@ class NotFoundPlugin extends Plugin
 			switch ($exception->getCode()) {
 				case Dispatcher::EXCEPTION_HANDLER_NOT_FOUND:
 				case Dispatcher::EXCEPTION_ACTION_NOT_FOUND:
+				#print_r($exception);exit;
 					$dispatcher->forward(array(
 						'controller' => 'errors',
 						'action' => 'show404'
@@ -34,7 +35,7 @@ class NotFoundPlugin extends Plugin
 			}
 		}
 
-		print_r($exception);exit;
+		#print_r($exception);exit;
 		$dispatcher->forward(array(
 			'controller' => 'errors',
 			'action'     => 'show500'

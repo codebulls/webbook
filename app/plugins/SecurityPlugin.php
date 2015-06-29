@@ -58,7 +58,7 @@ class SecurityPlugin extends Plugin
 				'user'    => array('index', 'update', 'edit'),
 				'account'     => array('index', 'edit', 'update'),
 				'ticket'	=> array('index', 'create'),
-				'webbook' => array('index', 'new', 'edit', 'save', 'create', 'checkFormData', 'delete', 'chwebbook'),
+				'webbook' => array('index', 'new', 'edit', 'save', 'create', 'checkFormData', 'delete', 'chwebbook', 'acontrue'),
 				'project' => array('index', 'new', 'create', 'edit', 'update', 'delete'),
 				'center' => array('index')
 			);
