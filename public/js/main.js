@@ -8,23 +8,23 @@ $(document).ready(function(){
       accordion : false // A setting that changes the collapsible behavior to expandable instead of the default accordion style
     });
     $('ul.tabs').tabs();
-    $('.datepicker').pickadate({
-        selectMonths: true, // Creates a dropdown to control month
-        monthsFull: ['Januar', 'Februar', 'März', 'April', 'Mai', 'Juni', 'Juli', 'August', 'September', 'Oktober', 'November', 'Dezember'],
-        monthsShort: [ 'Jan', 'Feb', 'Mär', 'Apr', 'Mai', 'Jun', 'Jul', 'Aug', 'Sep', 'Okt', 'Nov', 'Dez' ],
-        weekdaysShort: [ 'So', 'Mo', 'Di', 'Mi', 'Do', 'Fr', 'Sa' ],
-        weekdaysFull: [ 'Sonntag', 'Montag', 'Dienstag', 'Mittwoch', 'Donnerstag', 'Freitag', 'Samstag' ],
-        min: [1940,1,1],
-        max: [1997,12,31],
-        selectYears: 57,
-        today: '',
-        clear: 'Löschen',
-        close: 'Übernehmen',
-        labelMonthNext: 'zum nächsten Monat',
-        labelMonthPrev: 'zum vorherigen Monat',
-        labelMonthSelect: 'Wähle dem Monat aus dem Menu',
-        labelYearSelect: 'Wähle das Jahr aus dem Menu'
-    });
+    // $('.datepicker').pickadate({
+    //     selectMonths: true, // Creates a dropdown to control month
+    //     monthsFull: ['Januar', 'Februar', 'März', 'April', 'Mai', 'Juni', 'Juli', 'August', 'September', 'Oktober', 'November', 'Dezember'],
+    //     monthsShort: [ 'Jan', 'Feb', 'Mär', 'Apr', 'Mai', 'Jun', 'Jul', 'Aug', 'Sep', 'Okt', 'Nov', 'Dez' ],
+    //     weekdaysShort: [ 'So', 'Mo', 'Di', 'Mi', 'Do', 'Fr', 'Sa' ],
+    //     weekdaysFull: [ 'Sonntag', 'Montag', 'Dienstag', 'Mittwoch', 'Donnerstag', 'Freitag', 'Samstag' ],
+    //     min: [1940,1,1],
+    //     max: [1997,12,31],
+    //     selectYears: 57,
+    //     today: '',
+    //     clear: 'Löschen',
+    //     close: 'Übernehmen',
+    //     labelMonthNext: 'zum nächsten Monat',
+    //     labelMonthPrev: 'zum vorherigen Monat',
+    //     labelMonthSelect: 'Wähle dem Monat aus dem Menu',
+    //     labelYearSelect: 'Wähle das Jahr aus dem Menu'
+    // });
 
     $('#clearRegisterForm').click(function () {
         $('#registerForm').trigger("reset");
@@ -42,6 +42,71 @@ $(document).ready(function(){
         $('#pdfform').trigger("reset");
     });
 
+    $('#checkAddAdminContent').click(checkAddAdminData);
+
+    function checkAddAdminData()
+    {
+        var addadminform = $('#adminAddAdmin');
+        var aapost = {
+            'prefix':addadminform.find('input[name=aaprefix]:checked').val(),
+            'firstname':$('#aafirst_name').val(),
+            'lastname':$('#aalast_name').val(),
+            'email':$('#aaemail').val(),
+            'password':$('#aapassword').val()
+        };
+
+
+        $.post('checkadmindata', aapost, function(data) {
+            var aao = $.parseJSON(data);
+            if(aao.res == 'ok')
+            {
+                $('#formAddAdminConfirmTrigger').click();
+                $('#checkAddAdminContent').parent().html('<button class="btn waves-effect waves-light fullsize light-blue lighten-1" type="submit" id="checkContent" name="action" value="saveadmin">Speichern<i class="material-icons right">send</i></button>');
+            }
+            else
+            {
+                $('#confirmationAddAdminNotOk').html('');
+                $('#confirmationAddAdminNotOk').append('<div class="modal-content">' +
+                '<h4 class="red-text text-accent-4">Fehler bei Dateneingabe!</h4>' +
+                '<p>Sie haben Ihre Daten unvollständig bzw. nicht korrekt eingegeben.</p>' +
+                '<p>Bitte wiederholen Sie Ihre Eingaben und klicken Sie erneut auf <strong>"Daten prüfen"</strong>.</p>' +
+                '<strong>Folgende Felder müssen überprüft werden:</<strong>' +
+                '<table class="bordered" id="confirmationAddAdminTable"> ');
+
+                $(aao).each(function(i,e) {
+                    switch(e)
+                    {
+                        case 'prefix':
+                            $('#confirmationAddAdminTable').append('<tr><td><strong>Anrede:</strong></td><td>Bitte wählen Sie eine Anrede aus.</td></tr>');
+                            break;
+                        case 'firstname':
+                            $('#confirmationAddAdminTable').append('<tr><td><strong>Vorname:</strong></td><td>Bitte Vornamen eintragen.</td></tr>');
+                            break;
+                        case 'lastname':
+                            $('#confirmationAddAdminTable').append('<tr><td><strong>Nachname:</strong></td><td>Bitte Nachnamen eintragen.</td></tr>');
+                            break;
+                        case 'email':
+                            $('#confirmationAddAdminTable').append('<tr><td><strong>Email:</strong></td><td>Bitte Email überprüfen.</td></tr>');
+                            break;
+                        case 'password':
+                            $('#confirmationAddAdminTable').append('<tr><td><strong>Passwort:</strong></td><td>Tragen Sie ein Passwort ein.</td></tr>');
+                            break;
+                        default:
+                            break;
+                    }
+                });
+
+                $('#confirmationAddAdminNotOk').append('</table>' +
+               '</div>' +
+               '<div class="modal-footer">' +
+                    '<a href="#!" class=" modal-action modal-close waves-effect waves-red red lighten-1 btn">Schließen</a>' +
+               '</div>');
+
+                $('#failedAddAdminConfirm').click();
+            }
+        });
+    }
+
     $('#checkAdminContent').click(checkAdminData);
 
     function checkAdminData() {
@@ -58,7 +123,7 @@ $(document).ready(function(){
             'firstname':$('#afirst_name').val(),
             'lastname':$('#alast_name').val(),
             'email':$('#aemail').val(),
-            'password':$('#apasswort').val(),
+            'password':$('#apassword').val(),
             'street':$('#astreet').val(),
             'zip':$('#azip').val(),
             'city':$('#acity').val()

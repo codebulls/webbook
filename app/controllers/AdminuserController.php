@@ -4,7 +4,13 @@ class AdminuserController extends ControllerBase
 {
 	public function indexAction()
 	{
+		$customers = User::find("user_group = 1");
+		$admins = User::find("user_group = 2");
 
+		$this->view->setVars([
+			'customers' => $customers,
+			'admins' => $admins
+		]);
 	}
 
 	public function adduserAction()
@@ -19,7 +25,35 @@ class AdminuserController extends ControllerBase
 
 	public function addadminAction()
 	{
-		
+
+	}
+
+	public function checkadmindataAction()
+	{
+		$this->view->disable();
+		$error = array();
+		$p = $_POST;
+
+		foreach($p as $k=>$v)
+		{
+			if(empty($v))
+			{
+				$error[] = $k;
+			}
+		}
+
+		if (filter_var($p['email'], FILTER_VALIDATE_EMAIL) === false) {
+			$error[] = 'email';
+		}
+
+
+		if(count($error) < 1)
+		{
+			echo json_encode(array('res' => 'ok'));
+		}
+		else {
+			echo json_encode($error);
+		}
 	}
 
 	public function checkadduserdataAction()
@@ -41,6 +75,39 @@ class AdminuserController extends ControllerBase
 		}
 		else {
 			echo json_encode($error);
+		}
+	}
+
+	public function saveadminAction()
+	{
+		if(isset($_POST['action']) && $_POST['action'] == 'saveadmin')
+		{
+			$user = new User();
+			$user->email = $_POST['aaemail'];
+			$user->password = password_hash($_POST['aapassword'], PASSWORD_BCRYPT);
+			$user->prefix = $_POST['aaprefix'];
+			$user->firstname = $_POST['aafirstname'];
+			$user->lastname = $_POST['aalastname'];
+			$user->company = '---';
+			$user->phone = '---';
+			$user->street = '---';
+			$user->zip = 0;
+			$user->city = '---';
+			$user->land = 7;
+			$user->steuerid = '---';
+			$user->user_group = 2;
+			$user->hidden = 0;
+			$user->deleted = 0;
+
+			$result = $user->create();
+
+			if(!$result)
+			{
+				print_r($user->getMessages());
+			}
+			else {
+				$this->response->redirect("adminuser");
+			}
 		}
 	}
 

@@ -44,7 +44,7 @@ class SecurityPlugin extends Plugin
 
 			//Admin Zugriffe
 			$adminResources = array(
-				'adminuser'    => array('index', 'adduser', 'addadmin', 'checkadduserdata', 'edit', 'saveuser', 'create', 'delete'),
+				'adminuser'    => array('index', 'adduser', 'addadmin', 'checkadduserdata', 'checkadmindata', 'edit', 'saveuser', 'saveadmin', 'delete'),
 				'adminaccount'     => array('index', 'edit', 'save', 'create', 'delete', 'show'),
 				'adminwebbook' => array('index', 'new', 'edit', 'save', 'create', 'delete'),
 				'admincenter' => array('index'),

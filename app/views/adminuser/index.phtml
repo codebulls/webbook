@@ -49,18 +49,69 @@ $url = new Url();
 </div>
 <div class="divider"></div>
 <div class="section">
-  <div class="container tabBlue">
-    <div class="row">
-      <div class="col s12 m12 l12">
-        <ul class="tabs">
-          <li class="tab col s6 m6 l6">
-            <a href="#usercm">Kunden</a>
-          </li>
-          <li class="tab col s6 m6 l6">
-            <a href="#userad">Administratoren</a>
-          </li>
-        </ul>
-      </div>
-    </div>
-  </div>
+	<div class="container tabBlue">
+		<div class="row">
+			<div class="col s12 m12 l12">
+				<ul class="tabs">
+					<li class="tab col s6 m6 l6">
+						<a href="#usercm">Kunden</a>
+					</li>
+					<li class="tab col s6 m6 l6">
+						<a href="#userad">Administratoren</a>
+					</li>
+				</ul>
+			</div>
+		</div>
+	</div>
+	<div id="usercm" class="col s12">
+		<div class="section">
+			<div class="container">
+				<div class="row">
+					<h5 class="white-text center">Kunden - Liste</h5>
+				</div>
+				<div class="row">
+					<?php $ccounter = 1; ?>
+					<ul class="collapsible popout" data-collapsible="accordion" id="customerlist">
+						<?php foreach($customers as $c) : ?>
+							<li>
+								<div class="collapsible-header">
+									<i class="material-icons">person</i>
+									<span class="right"><strong>Name:</strong> <?php echo $c->firstname.' '.$c->lastname; ?></span>
+								</div>
+								<div class="collapsible-body">
+									<div class="container">
+										<div class="row">
+											
+										</div>
+									</div>
+								</div>
+							</li>
+						<?php endforeach; ?>
+					</ul>
+				</div>
+			</div>
+		</div>
+	</div>
+    <div id="userad" class="col s12">
+		<div class="section">
+			<div class="container">
+				<div class="row">
+					<h5 class="white-text center">Administratoren - Liste</h5>
+				</div>
+				<div class="row">
+					<?php $ccounter = 1; ?>
+					<ul class="collapsible popout" data-collapsible="accordion" id="customerlist">
+						<?php foreach($admins as $a) : ?>
+							<li>
+								<div class="collapsible-header">
+									<i class="material-icons">person</i>
+									<span class="right"><strong>Name:</strong> <?php echo $a->firstname.' '.$a->lastname; ?></span>
+								</div>
+							</li>
+						<?php endforeach; ?>
+					</ul>
+				</div>
+			</div>
+		</div>
+	</div>
 </div>
