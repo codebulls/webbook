@@ -1,0 +1,163 @@
+<?php
+use Phalcon\Mvc\Url;
+use \Phalcon\Tag as Tag;
+$url = new Url();
+?>
+<div class="section">
+	<div class="container">
+	    <div class="row">
+	        <div class="l12 s12">
+	            <h1 class="header center white-text lighten-1 accent-3">Benutzer hinzufügen</h1>
+	        </div>
+	    </div>
+	</div>
+</div>
+<div class="divider"></div>
+<div class="section">
+  <div class="container">
+    <div class="row marginNull">
+      <div class="col s12 m12 l12">
+          <?=Tag::linkTo(array("/adminuser", 'Zu Benutzer-Übersicht<i class="material-icons left">supervisor_account</i>', 'class' => 'btn waves-effect waves-light fullsize light-blue lighten-1'));?>
+      </div>
+    </div>
+  </div>
+</div>
+<div class="divider"></div>
+<div class="section">
+  <div class="container">
+    <div class="row">
+      <h5 class="white-text center">Bitte Daten eingeben</h5>
+    </div>
+    <form action="saveuser" method="post" id="adminAddUser">
+		<div class="row">
+			<div class="input-field col s12 l12 m12">
+				<select name="atariff" id="atariff">
+					<option value="" disabled selected>Bitte aushwählen</option>
+					<?php foreach ($tariffe as $tariff): ?>
+					<option value="<?=$tariff->id?>"><?=$tariff->title?></option>
+					<?php endforeach; ?>
+				</select>
+				<label for="atariff">Tarif Auswahl: bitte wählen Sie ein Tarif aus.</label>
+			</div>
+		</div>
+		<div class="row">
+			<div class="input-field col s12 m12 l4">
+				<div class="row section inRadioRange">
+					<div class="col l6 s12 m12">
+						<input class="with-gap" name="aprefix" type="radio" id="anredeHerr" value="Herr" />
+						<label for="anredeHerr">Herr</label>
+					</div>
+					<div class="col l6 s12 m12">
+						<input class="with-gap" name="aprefix" type="radio" id="anredeFrau" value="Frau" />
+						<label for="anredeFrau">Frau</label>
+					</div>
+				</div>
+			</div>
+		<div class="input-field col s12 m12 l4">
+		    <i class="material-icons prefix">person</i>
+		    <input id="afirst_name" name="afirstname" type="text" class="validate">
+		    <label for="afirst_name">Vorname</label>
+		</div>
+		<div class="input-field col s12 m12 l4">
+			<i class="material-icons prefix">person</i>
+			<input type="text" name="alastname" class="validate" id="alast_name">
+			<label for="alast_name">Nachname</label>
+		</div>
+		</div>
+		<div class="row">
+			<div class="input-field col s12 m12 l6">
+				<i class="material-icons prefix">email</i>
+				<input id="aemail" type="email" name="aemail" class="validate" />
+				<label for="aemail">E-Mail</label>
+			</div>
+			<div class="input-field col s12 m12 l6">
+				<i class="material-icons prefix">lock</i>
+				<input id="apassword" name="apassword" type="password" class="validate" />
+				<label for="apassword">Passwort</label>
+			</div>
+		</div>
+		<div class="row">
+			<div class="input-field col s12 m12 l6">
+				<i class="material-icons prefix">domain</i>
+				<input id="acompany" name="acompany" type="text" />
+				<label for="acompany">Firma / Organisation</label>
+			</div>
+			<div class="input-field col s12 m12 l6">
+				<i class="material-icons prefix">phone</i>
+				<input id="aphone" name="aphone" type="text" />
+				<label for="aphone">Telefon</label>
+			</div>
+		</div>
+		<div class="row">
+			<div class="input-field col s12 m12 l8">
+				<i class="material-icons prefix">pin_drop</i>
+				<input name="astreet" id="astreet" type="text" class="validate" />
+				<label for="astreet">Straße</label>
+			</div>
+			<div class="input-field col s12 m12 l4">
+				<i class="material-icons prefix">my_location</i>
+				<input name="azip" id="azip" class="validate" type="text" />
+				<label for="azip">PLZ</label>
+			</div>
+		</div>
+		<div class="row">
+			<div class="input-field col s12 m12 l6">
+				<i class="material-icons prefix">map</i>
+				<input name="acity" id="acity" class="validate" type="text" />
+				<label for="acity">Stadt</label>
+			</div>
+			<div class="input-field col s12 l6 m12">
+				<select name="aland" id="land">
+					<option value="" disabled selected>Bitte aushwählen</option>
+					<?php foreach ($lands as $land): ?>
+					<option value="<?=$land->id?>"><?=$land->title?></option>
+					<?php endforeach; ?>
+				</select>
+				<label for="land">Land Auswahl: bitte wählen Sie ein Land aus.</label>
+			</div>
+		</div>
+		<div class="row">
+			<div class="input-field col s12 m12 l6">
+				<i class="material-icons prefix">edit</i>
+				<input name="asteuerid" id="steuerid" type="text" />
+				<label for="steuerid">Steuer-ID</label>
+			</div>
+			<div class="input-field col s12 m12 l6">
+				<input name="setactive" id="setactive" class="validate" value="1" type="checkbox" />
+				<label for="setactive">Aktivieren?</label>
+			</div>
+		</div>
+		<div class="row">
+			<div class="input-field col s12 m12 l6">
+				<a class="btn waves-effect waves-light fullsize light-blue lighten-1" id="clearAddUserForm" name="clearform">
+					Formular leeren
+					<i class="material-icons left">delete</i>
+				</a>
+			</div>
+			<div class="input-field col s12 m12 l6">
+				<button class="btn waves-effect waves-light fullsize light-blue lighten-1" type="button" id="checkAdminContent" name="action" value="register">Daten prüfen
+					<i class="material-icons right">security</i>
+				</button>
+
+			</div>
+			<a id="formAdminConfirmTrigger" class="modal-trigger" href="#confirmationAdminData">Data Confirmation</a>
+			<div id="confirmationAdminData" class="modal">
+				<div class="modal-content">
+					<h4>Datenüberprüfung abgeschlossen!</h4>
+					<p>Ihre Daten wurden auf korrekte Eingabe überprüft. Nun können Sie die Registrierung abschließen.</p>
+					<p>Klicken Sie dazu einfach auf den Button <strong>"Registrieren"</strong>.</p>
+				</div>
+				<div class="modal-footer">
+					<a href="#!" class=" modal-action modal-close waves-effect waves-green btn-flat">Schließen</a>
+				</div>
+			</div>
+			<a id="failedAdminConfirm" class="modal-trigger" href="#confirmationAdminNotOk">Confirmation Failed</a>
+			<div id="confirmationAdminNotOk" class="modal">
+				<div class="modal-content">
+					Hidden Content
+				</div>
+			</div>
+		</div>
+    </form>
+  </div>
+</div>

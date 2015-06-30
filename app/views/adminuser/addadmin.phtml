@@ -1,0 +1,101 @@
+<?php
+use Phalcon\Mvc\Url;
+use \Phalcon\Tag as Tag;
+$url = new Url();
+?>
+<div class="section">
+	<div class="container">
+	    <div class="row">
+	        <div class="l12 s12">
+	            <h1 class="header center white-text lighten-1 accent-3">Administrator hinzufügen</h1>
+	        </div>
+	    </div>
+	</div>
+</div>
+<div class="divider"></div>
+<div class="section">
+  <div class="container">
+    <div class="row marginNull">
+      <div class="col s12 m12 l12">
+          <?=Tag::linkTo(array("/adminuser", 'Zu Benutzer-Übersicht<i class="material-icons left">supervisor_account</i>', 'class' => 'btn waves-effect waves-light fullsize light-blue lighten-1'));?>
+      </div>
+    </div>
+  </div>
+</div>
+<div class="divider"></div>
+<div class="section">
+    <div class="container">
+        <div class="row">
+            <h5 class="white-text center">Daten eingeben</h5>
+        </div>
+    <form action="saveadmin" method="post" name="adminAddAdmin">
+        <div class="row">
+			<div class="input-field col s12 m12 l4">
+				<div class="row section inRadioRange">
+					<div class="col l6 s12 m12">
+						<input class="with-gap" name="aprefix" type="radio" id="anredeHerr" value="Herr" />
+						<label for="anredeHerr">Herr</label>
+					</div>
+					<div class="col l6 s12 m12">
+						<input class="with-gap" name="aprefix" type="radio" id="anredeFrau" value="Frau" />
+						<label for="anredeFrau">Frau</label>
+					</div>
+				</div>
+			</div>
+		<div class="input-field col s12 m12 l4">
+		    <i class="material-icons prefix">person</i>
+		    <input id="afirst_name" name="afirstname" type="text" class="validate">
+		    <label for="afirst_name">Vorname</label>
+		</div>
+		<div class="input-field col s12 m12 l4">
+			<i class="material-icons prefix">person</i>
+			<input type="text" name="alastname" class="validate" id="alast_name">
+			<label for="alast_name">Nachname</label>
+		</div>
+		</div>
+		<div class="row">
+			<div class="input-field col s12 m12 l6">
+				<i class="material-icons prefix">email</i>
+				<input id="aemail" type="email" name="aemail" class="validate" />
+				<label for="aemail">E-Mail</label>
+			</div>
+			<div class="input-field col s12 m12 l6">
+				<i class="material-icons prefix">lock</i>
+				<input id="apassword" name="apassword" type="password" class="validate" />
+				<label for="apassword">Passwort</label>
+			</div>
+		</div>
+        <div class="row">
+			<div class="input-field col s12 m12 l6">
+				<a class="btn waves-effect waves-light fullsize light-blue lighten-1" id="clearAddAdminForm" name="clearform">
+					Formular leeren
+					<i class="material-icons left">delete</i>
+				</a>
+			</div>
+			<div class="input-field col s12 m12 l6">
+				<button class="btn waves-effect waves-light fullsize light-blue lighten-1" type="button" id="checkAddAdminContent" name="action" value="register">Daten prüfen
+					<i class="material-icons right">security</i>
+				</button>
+
+			</div>
+			<a id="formAddAdminConfirmTrigger" class="modal-trigger" href="#confirmationAddAdminData">Data Confirmation</a>
+			<div id="confirmationAddAdminData" class="modal">
+				<div class="modal-content">
+					<h4>Datenüberprüfung abgeschlossen!</h4>
+					<p>Ihre Daten wurden auf korrekte Eingabe überprüft. Nun können Sie die Registrierung abschließen.</p>
+					<p>Klicken Sie dazu einfach auf den Button <strong>"Registrieren"</strong>.</p>
+				</div>
+				<div class="modal-footer">
+					<a href="#!" class=" modal-action modal-close waves-effect waves-green btn-flat">Schließen</a>
+				</div>
+			</div>
+			<a id="failedAddAdminConfirm" class="modal-trigger" href="#confirmationAddAdminNotOk">Confirmation Failed</a>
+			<div id="confirmationAddAdminNotOk" class="modal">
+				<div class="modal-content">
+					Hidden Content
+				</div>
+			</div>
+		</div>
+    </form>
+    </div>
+</div>

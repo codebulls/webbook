@@ -1,4 +1,4 @@
-<?php 
+<?php
 
 class UserController extends ControllerBase
 {
@@ -13,7 +13,7 @@ class UserController extends ControllerBase
 		$l = Land::find();
         $this->view->setVars([
             'tariffe' => $t,
-            'lands' => $l 
+            'lands' => $l
         ]);
 	}
 
@@ -42,7 +42,7 @@ class UserController extends ControllerBase
                 {
                     $user->$k = $v;
                 }
-            }   
+            }
             $result = $user->update();
             if(!$result) {
                 print_r($user->getMessages());
@@ -110,7 +110,7 @@ class UserController extends ControllerBase
             $user->prefix = $_POST['prefix'];
             $user->firstname = $_POST['firstname'];
             $user->lastname = $_POST['lastname'];;
-            
+
             if(!empty($_POST['company']))
             {
             	$user->company = $_POST['company'];
@@ -127,12 +127,12 @@ class UserController extends ControllerBase
             {
             	$user->steuerid = '---';
             }
-            	
+
             $user->street = $_POST['street'];
             $user->zip = $_POST['zip'];
             $user->city = $_POST['city'];
             $user->land = $_POST['land'];
-            
+
             if(!empty($_POST['phone']))
             {
             	$user->phone = $_POST['phone'];
@@ -153,7 +153,6 @@ class UserController extends ControllerBase
             }
             else
             {
-
                 $this->dispatcher->forward(array(
                    "controller" => "account",
                    "action"     => "create",
@@ -166,14 +165,14 @@ class UserController extends ControllerBase
 	public function confirmAction($userid)
 	{
 		$user = User::findFirstById($userid);
-       
+
         $conditions = "user_id = ".$user->id;
-        
+
         $account = Account::findFirst(array(
             $conditions
         ));
-        
-        
+
+
         $conditionTariff = "id = ".$account->tariff_id;
 
         $tariff = Tariff::findFirst(array(
@@ -191,7 +190,7 @@ class UserController extends ControllerBase
             default:
                 break;
         }
-        
+
         $this->view->setVars([
             'confirmCreatedCustomer' => $user,
             'akey' => $account->akey,

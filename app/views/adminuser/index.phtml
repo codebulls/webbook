@@ -1,1 +1,66 @@
-Das ist der User-Bereich für die Administratoren
+<?php
+use Phalcon\Mvc\Url;
+use \Phalcon\Tag as Tag;
+$url = new Url();
+?>
+<div class="section">
+	<div class="container">
+	    <div class="row">
+	        <div class="l12 s12">
+	            <h1 class="header center white-text lighten-1 accent-3">Benutzer Verwaltung</h1>
+	        </div>
+	    </div>
+	</div>
+</div>
+<div class="divider"></div>
+<div class="section">
+  <div class="container">
+    <div class="row marginNull">
+      <div class="col s12 m12 l6">
+          <?=Tag::linkTo(array("/admincenter", 'Zum Admin-Center<i class="material-icons left">home</i>', 'class' => 'btn waves-effect waves-light fullsize light-blue lighten-1'));?>
+      </div>
+      <div class="col s12 m12 l6">
+		<a class="btn waves-effect waves-light fullsize light-blue lighten-1 modal-trigger" href="#addpro">
+			Benutzer hinzufügen<i class="material-icons right">person_add</i>
+		</a>
+		<div id="addpro" class="modal">
+			<div class="modal-content">
+				<div class="row">
+					<h4 class="center">Benutzer hinzufügen</h4>
+				</div>
+				<div class="row">
+					<div class="col s12 m12 l6">
+						<?=Tag::linkTo(array("/adminuser/adduser", 'Kunde hinzufügen<i class="material-icons right">person_add</i>', 'class' => 'btn waves-effect waves-light fullsize teal accent-4'));?>
+					</div>
+					<div class="col s12 m12 l6">
+						<?=Tag::linkTo(array("/adminuser/addadmin", 'Administrator hinzufügen<i class="material-icons right">person_add</i>', 'class' => 'btn waves-effect waves-light fullsize teal accent-4'));?>
+					</div>
+				</div>
+			</div>
+			<div class="modal-footer">
+				<div class="col s12 m12 l12">
+					<a class="btn waves-effect fullsize light-blue lighten-1 modal-action modal-close waves-light" href="#!">Schließen <i class="material-icons left">arrow_back</i></a>
+				</div>
+			</div>
+		</div>
+      </div>
+    </div>
+  </div>
+</div>
+<div class="divider"></div>
+<div class="section">
+  <div class="container tabBlue">
+    <div class="row">
+      <div class="col s12 m12 l12">
+        <ul class="tabs">
+          <li class="tab col s6 m6 l6">
+            <a href="#usercm">Kunden</a>
+          </li>
+          <li class="tab col s6 m6 l6">
+            <a href="#userad">Administratoren</a>
+          </li>
+        </ul>
+      </div>
+    </div>
+  </div>
+</div>

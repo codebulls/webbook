@@ -1,0 +1,56 @@
+<?php
+
+class AdminaccountController extends ControllerBase
+{
+    public function indexAction()
+    {
+
+    }
+
+    public function createAction($tariff, $active)
+    {
+        $users = User::find();
+        $id = $users->getLast();
+        $user_id = User::findFirstById($id->id);
+        $account = new Account();
+        $account->tariff_id = $tariff;
+        $account->user_id = $user_id->id;
+        $account->active = $active;
+        $account->akey = sha1(time());
+        $account->created_at = date("Y-m-d H:i:s");
+        $account->user_deactivate = 0;
+        $account->user_deactivate_confirm = 0;
+        $account->deleted = 0;
+        $account->hidden = 0;
+
+        $result = $account->create();
+
+        if(!$result)
+        {
+            print_r('Fehler!!!');exit;
+        }
+        else
+        {
+            $account = Account::findFirst("user_id = ".$user_id->id);
+
+            $cpath = getcwd()."/customers/";
+
+            if(!file_exists($cpath.$account->akey))
+            {
+                if(mkdir($cpath.$account->akey, 0755, true))
+                {
+                    if(mkdir($cpath.$account->akey."/pdfs", 0755, true) && mkdir($cpath.$account->akey."/webbook", 0755, true))
+                    {
+                        $this->response->redirect("adminuser");
+                    }
+                }
+                else {
+                    print_r('Fehler!!! - mkdir');exit;
+                }
+            }
+            else {
+                print_r('Fehler!!! - file_exists');exit;
+            }
+        }
+    }
+}

@@ -29,11 +29,102 @@ $(document).ready(function(){
     $('#clearRegisterForm').click(function () {
         $('#registerForm').trigger("reset");
     });
-    
+
+    $('#clearAddUserForm').click(function() {
+        $('#adminAddUser').trigger("reset");
+    });
+
+    $('#clearAddAdminForm').click(function () {
+        $('#adminAddAdmin').trigger("reset");
+    });
+
     $('#clearWebbookForm').click(function () {
         $('#pdfform').trigger("reset");
     });
-    
+
+    $('#checkAdminContent').click(checkAdminData);
+
+    function checkAdminData() {
+        var adduserform = $('#adminAddUser');
+        var setactive = 0;
+        if($('#setactive').prop('checked'))
+        {
+            setactive = 1;
+        }
+
+        var apost = {
+            'tariff':$('#atariff option:selected').val(),
+            'prefix':adduserform.find('input[name=aprefix]:checked').val(),
+            'firstname':$('#afirst_name').val(),
+            'lastname':$('#alast_name').val(),
+            'email':$('#aemail').val(),
+            'password':$('#apasswort').val(),
+            'street':$('#astreet').val(),
+            'zip':$('#azip').val(),
+            'city':$('#acity').val()
+        };
+
+        $.post('checkadduserdata', apost, function(data) {
+            var ao = $.parseJSON(data);
+
+            if(ao.res == 'ok')
+            {
+                $('#formAdminConfirmTrigger').click();
+                $('#checkAdminContent').parent().html('<button class="btn waves-effect waves-light fullsize light-blue lighten-1" type="submit" id="checkContent" name="action" value="save">Speichern<i class="material-icons right">send</i></button>');
+            }
+            else
+            {
+                $('#confirmationAdminNotOk').html('');
+
+                $('#confirmationAdminNotOk').append('<div class="modal-content">' +
+                '<h4 class="red-text text-accent-4">Fehler bei Dateneingabe!</h4>' +
+                '<p>Sie haben Ihre Daten unvollständig bzw. nicht korrekt eingegeben.</p>' +
+                '<p>Bitte wiederholen Sie Ihre Eingaben und klicken Sie erneut auf <strong>"Daten prüfen"</strong>.</p>' +
+                '<strong>Folgende Felder müssen überprüft werden:</<strong>' +
+                '<table class="bordered" id="confirmationAdminTable"> ');
+
+                $(ao).each(function(i,e) {
+                    switch(e)
+                    {
+                        case 'tariff':
+                            $('#confirmationAdminTable').append('<tr><td><strong>Tarif-Auswahl:</strong></td><td>Wählen Sie einen Tarif aus.</td></tr>');
+                            break;
+                        case 'firstname':
+                            $('#confirmationAdminTable').append('<tr><td><strong>Vorname:</strong></td><td>Bitte Vornamen eintragen.</td></tr>');
+                            break;
+                        case 'lastname':
+                            $('#confirmationAdminTable').append('<tr><td><strong>Nachname:</strong></td><td>Bitte Nachnamen eintragen.</td></tr>');
+                            break;
+                        case 'email':
+                            $('#confirmationAdminTable').append('<tr><td><strong>Email:</strong></td><td>Bitte Email überprüfen.</td></tr>');
+                            break;
+                        case 'password':
+                            $('#confirmationAdminTable').append('<tr><td><strong>Passwort:</strong></td><td>Tragen Sie ein Passwort ein.</td></tr>');
+                            break;
+                        case 'street':
+                            $('#confirmationAdminTable').append('<tr><td><strong>Straße:</strong></td><td>Geben Sie eine Straße ein.</td></tr>');
+                            break;
+                        case 'zip':
+                            $('#confirmationAdminTable').append('<tr><td><strong>PLZ:</strong></td><td>Geben Sie PLZ ein.</td></tr>');
+                            break;
+                        case 'city':
+                            $('#confirmationAdminTable').append('<tr><td><strong>Stadt:</strong></td><td>Geben Sie Stadt ein.</td></tr>');
+                            break;
+                        default:
+                            break;
+                    }
+                });
+
+                $('#confirmationAdminNotOk').append('</table>' +
+               '</div>' +
+               '<div class="modal-footer">' +
+                    '<a href="#!" class=" modal-action modal-close waves-effect waves-red btn-flat">Schließen</a>' +
+               '</div>');
+
+                $('#failedAdminConfirm').click();
+            }
+        });
+    }
 
     $('#checkContent').click(checkData);
 
@@ -131,10 +222,10 @@ $(document).ready(function(){
 
 
     }
-    
-    
+
+
     $('#checkPdfData').click(checkPdfForm);
-    
+
     function checkPdfForm()
     {
         var form = $('#pdfform');
@@ -146,7 +237,7 @@ $(document).ready(function(){
             'pdfname':$("#pdfname").val(),
             'pdffile':$("#pdffile").val()
         }
-        
+
         $.post(host+'/webbook/checkFormData', post, function (data) {
             var o = $.parseJSON(data);
 
@@ -166,7 +257,7 @@ $(document).ready(function(){
                 '<p>Bitte wiederholen Sie Ihre Eingaben und klicken Sie erneut auf <strong>"Daten prüfen"</strong>.</p>' +
                 '<strong>Folgende Felder müssen überprüft werden:</<strong>' +
                 '<table class="bordered" id="confirmationTable"> ');
-                
+
                 $(o).each(function(i,e){
                     switch (e)
                     {
@@ -183,16 +274,16 @@ $(document).ready(function(){
                             break;
                     }
                 });
-                
+
                 $('#confirmationNotOk').append('</table>' +
                '</div>' +
                '<div class="modal-footer">' +
                     '<a href="#!" class=" modal-action modal-close waves-effect waves-red btn-flat">Schließen</a>' +
                '</div>');
-                
+
                 $('#failedConfirm').click();
             }
         });
     }
-    
+
 });

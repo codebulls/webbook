@@ -249,7 +249,26 @@ main .dropdown-content {
     color: #fff;
 }
 
-#formConfirmTrigger, #failedConfirm {display: none;}
+#formConfirmTrigger, #failedConfirm, #formAdminConfirmTrigger, #formAddAdminConfirmTrigger, #failedAddAdminConfirm, #failedAdminConfirm {display: none;}
+
+.tabBlue .tabs .tab a {
+  color:#fff;
+  background: #616161;
+}
+
+.tabBlue .tabs .tab a:hover {
+  background: #29B6F6;
+}
+
+.tabBlue .tabs .tab a.active {
+  color:#fff;
+  background: #29B6F6;
+}
+
+.tabBlue .tabs .indicator {
+  background-color: #fff;
+  height: 5px;
+}
 
 #accTabs .tabs .tab a {
     color:#fff;

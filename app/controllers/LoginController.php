@@ -45,19 +45,12 @@ class LoginController extends ControllerBase
 					if($user->user_group == 2)
 					{
 						$this->_registerAdminSession($user);
-						return $this->dispatcher->forward(array(
-							"controller" => "admincenter",
-							"action" => "index",
-							"params" => array('uid' => $user->id)
-						));
+						return $this->response->redirect("admincenter");
 					}
 					elseif($user->user_group == 1 && $account->active == 1)
 					{
 						$this->_registerCustomerSession($user);
-						return $this->dispatcher->forward(array(
-							"controller" => "center",
-							"action" => "index"
-						));
+						return $this->response->redirect("center");
 					}
 					else
 					{
@@ -100,7 +93,7 @@ class LoginController extends ControllerBase
     		$this->session->remove('a_auth');
     		return $this->dispatcher->forward(array("controller" => "index", "action" => "index"));
     	}
-    	else 
+    	else
     	{
     		$this->session->remove('c_auth');
     		return $this->dispatcher->forward(array("controller" => "index", "action" => "index"));
