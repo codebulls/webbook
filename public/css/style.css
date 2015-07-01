@@ -40,7 +40,11 @@ main {
 }
 
 .marginNull {
-  margin: 0;
+  margin: 0!important;
+}
+
+.marginTopTen {
+    margin-top: 10px;
 }
 
 .wbCounter {

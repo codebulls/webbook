@@ -19,4 +19,16 @@ class Project extends BaseModel
 		$project = Project::findFirst("id = ".$wpid);
 		return $project->id;
 	}
+
+	public static function getAccProjects($cid)
+	{
+		$projects = Project::find("user_id = ".$cid);
+		return count($projects);
+	}
+
+	public static function getAprojects($cid)
+	{
+		$projects = Project::find("user_id = ".$cid);
+		return $projects;
+	}
 }

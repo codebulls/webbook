@@ -26,6 +26,15 @@ $(document).ready(function(){
     //     labelYearSelect: 'Wähle das Jahr aus dem Menu'
     // });
 
+
+
+
+    $('.cpacck').zclip({
+        path:'js/ZeroClipboard.swf',
+        copy:$('.acck').text()
+    });
+
+
     $('#clearRegisterForm').click(function () {
         $('#registerForm').trigger("reset");
     });
@@ -61,7 +70,7 @@ $(document).ready(function(){
             if(aao.res == 'ok')
             {
                 $('#formAddAdminConfirmTrigger').click();
-                $('#checkAddAdminContent').parent().html('<button class="btn waves-effect waves-light fullsize light-blue lighten-1" type="submit" id="checkContent" name="action" value="saveadmin">Speichern<i class="material-icons right">send</i></button>');
+                $('#checkAddAdminContent').parent().html('<button class="btn waves-effect waves-light fullsize teal accent-3 black-text" type="submit" id="checkContent" name="action" value="saveadmin">Speichern<i class="material-icons black-texst right">send</i></button>');
             }
             else
             {
@@ -135,7 +144,7 @@ $(document).ready(function(){
             if(ao.res == 'ok')
             {
                 $('#formAdminConfirmTrigger').click();
-                $('#checkAdminContent').parent().html('<button class="btn waves-effect waves-light fullsize light-blue lighten-1" type="submit" id="checkContent" name="action" value="save">Speichern<i class="material-icons right">send</i></button>');
+                $('#checkAdminContent').parent().html('<button class="btn waves-effect waves-light fullsize teal accent-3 black-text" type="submit" id="checkContent" name="action" value="save">Speichern<i class="material-icons right black-text">send</i></button>');
             }
             else
             {
@@ -224,7 +233,7 @@ $(document).ready(function(){
             {
                 $('#formConfirmTrigger').click();
 
-                $('#checkContent').parent().html('<button class="btn waves-effect waves-light fullsize light-blue lighten-1" type="submit" id="checkContent" name="action" value="register">Registrieren<i class="mdi-content-send right"></i></button>');
+                $('#checkContent').parent().html('<button class="btn waves-effect waves-light fullsize teal accent-3 black-text" type="submit" id="checkContent" name="action" value="register">Registrieren<i class="material-icons black-text right">send</i></button>');
             }
             else
             {

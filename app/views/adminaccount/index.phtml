@@ -1,0 +1,402 @@
+<?php
+use Phalcon\Mvc\Url;
+use \Phalcon\Tag as Tag;
+$url = new Url();
+?>
+<div class="section">
+	<div class="container">
+	    <div class="row">
+	        <div class="l12 s12">
+	            <h1 class="header center white-text lighten-1 accent-3">Accounts Verwaltung</h1>
+	        </div>
+	    </div>
+	</div>
+</div>
+<div class="divider"></div>
+<div class="section">
+    <div class="container">
+        <div class="row marginNull">
+            <div class="col s12 m12 l12">
+                <?=Tag::linkTo(array("/admincenter", 'Zum Admin-Center<i class="material-icons left">home</i>', 'class' => 'btn waves-effect waves-light fullsize light-blue lighten-1'));?>
+            </div>
+        </div>
+    </div>
+</div>
+<div class="divider"></div>
+<div class="section">
+    <div class="container">
+        <div class="row">
+            <?php $ccounter = 1; ?>
+            <ul class="collapsible popout" data-collapsible="accordion" id="customerlist">
+                <?php foreach($accounts as $a) : ?>
+                    <?php $currentUser = User::getUser($a->user_id); ?>
+                    <li>
+                        <div class="collapsible-header">
+                            <?php if($a->active == 1) : ?>
+                                <?php if($currentUser->company != '---') : ?>
+									<i class="material-icons teal-text text-accent-3">location_city</i>
+								<?php else : ?>
+									<i class="material-icons teal-text text-accent-3">account_circle</i>
+								<?php endif; ?>
+                            <?php else : ?>
+								<?php if($currentUser->company != '---') : ?>
+									<i class="material-icons pink-text text-lighten-1">location_city</i>
+								<?php else : ?>
+									<i class="material-icons pink-text text-lighten-1">account_circle</i>
+								<?php endif; ?>
+                            <?php endif; ?>
+                            <?php if($currentUser->company != '---') : ?>
+								<span class="right"><strong>Kunde:</strong> <?php echo $currentUser->company; ?></span>
+							<?php else : ?>
+								<span class="right"><strong>Kunde:</strong> <?php echo $currentUser->firstname.' '.$currentUser->lastname; ?></span>
+							<?php endif; ?>
+                        </div>
+                        <div class="collapsible-body white">
+                            <div class="container">
+                                <div class="row">
+                                    <table class="bordered responsive-table">
+                                        <tr>
+                                            <td class="black-text">
+                                                <strong>Account-Status:</strong>
+                                            </td>
+                                            <td class="<?php echo $a->active == 1 ? 'black-text teal accent-3' : 'white-text pink lighten-1'; ?>">
+                                                <?php echo $a->active == 1 ? 'Aktiv' : 'Inaktiv'; ?>
+                                            </td>
+                                        </tr>
+                                        <tr>
+                                            <td class="black-text">
+                                                <strong>Account-Key:</strong>
+                                            </td>
+                                            <td class="black-text">
+                                                <?=$a->akey;?>
+                                            </td>
+                                        </tr>
+                                        <tr>
+                                            <td class="black-text">
+                                                <strong>Tarif:</strong>
+                                            </td>
+                                            <td class="black-text">
+                                                <?php echo Tariff::getTariff($a->tariff_id)->title; ?>
+                                            </td>
+                                        </tr>
+                                        <?php if($a->active == 1) : ?>
+                                            <tr>
+                                                <td class="black-text">
+                                                    <strong>Aktiv seit:</strong>
+                                                </td>
+                                                <td class="black-text">
+                                                    <?php echo date('d.m.Y', strtotime($a->active_from)); ?>
+                                                </td>
+                                            </tr>
+                                            <tr>
+                                                <td class="black-text">
+                                                    <strong>Aktiv bis:</strong>
+                                                </td>
+                                                <td class="black-text">
+                                                    <?php echo date('d.m.Y', strtotime($a->active_untill)); ?>
+                                                </td>
+                                            </tr>
+                                        <?php endif; ?>
+                                        <tr>
+                                            <td class="black-text">
+                                                <strong>Vertragslaufzeit:</strong>
+                                            </td>
+                                            <td class="black-text">
+                                                <?php echo Tariff::getTariff($a->tariff_id)->activeperiodemonth.' Monate'; ?>
+                                            </td>
+                                        </tr>
+										<?php if(Project::getAccProjects($currentUser->id) > 0) : ?>
+											<tr>
+												<td class="black-text">
+													<strong>Projekte:</strong>
+												</td>
+												<td class="black-text">
+													<a class="btn-floating center teal accent-3 modal-trigger" href="#showPro<?php echo $currentUser->id;?>"><span class="wbCounter black-text"><?php echo Project::getAccProjects($currentUser->id); ?></span></a>
+													<div id="showPro<?php echo $currentUser->id; ?>" class="modal modal-fixed-footer">
+		                                            <div class="modal-content">
+		                                            	<?php $projekte = Project::getAprojects($currentUser->id); ?>
+														<h4>
+															Projekte von:
+															<?php if($currentUser->company != '---') : ?>
+																<?=$currentUser->company;?>
+															<?php else : ?>
+																<?php echo $currentUser->firstname.' '.$currentUser->lastname; ?>
+															<?php endif; ?>
+														</h4>
+		                                                <div class="row">
+															<table class="bordered responsive-table">
+																<tr>
+														            <th class="white-text light-blue lighten-1">Nr</th>
+														            <th class="white-text light-blue lighten-1">Titel</th>
+														            <th class="white-text light-blue lighten-1">Webseite</th>
+														        </tr>
+																<?php $pc = 1; ?>
+																<?php foreach($projekte as $p) : ?>
+																	<tr>
+																		<td class="black-text">
+																			<?=$pc;?>
+																		</td>
+																		<td class="black-text">
+																			<?=$p->title;?>
+																		</td>
+																		<td class="black-text">
+																			<?php echo '<a href="'.$p->weburl.'" title="zu '.$p->title.'">'.$p->weburl.'</a>'; ?>
+																		</td>
+																	</tr>
+																	<?php $pc++; ?>
+																<?php endforeach; ?>
+															</table>
+		                                                </div>
+													</div>
+		                                            <div class="modal-footer">
+		                                                    <div class="col s12 m12 l6">
+		                                                        <a class="btn waves-effect fullsize light-blue lighten-1 modal-action modal-close waves-light" href="#!">Schließen <i class="material-icons left">arrow_back</i></a>
+		                                                    </div>
+		                                                    <div class="col s12 m12 l6">
+		                                                        <a class="btn waves-effect waves-light fullsize light-blue lighten-1" href="<?php echo $url->get("adminaccount/delete/".$a->id) ?>">
+		                                    			            Zu den Webooks<i class="material-icons right">arrow_forward</i>
+		                                    			        </a>
+		                                                    </div>
+		                                            </div>
+
+		                                          </div>
+												</td>
+											</tr>
+										<?php endif; ?>
+										<?php if(Webbook::getAccWebbooks($a->id) > 0) : ?>
+											<tr>
+												<td class="black-text">
+													<strong>Webbooks:</strong>
+												</td>
+												<td class="black-text">
+													<a class="btn-floating center teal accent-3 modal-trigger" href="#showBooks<?php echo $a->id;?>"><span class="wbCounter black-text"><?php echo Webbook::getAccWebbooks($a->id); ?></span></a>
+													<div id="showBooks<?php echo $a->id; ?>" class="modal modal-fixed-footer">
+		                                            <div class="modal-content">
+		                                            	<?php $webbooks = Webbook::getAwebbooks($a->id); ?>
+														<h4>
+															Webbooks von:
+															<?php if($currentUser->company != '---') : ?>
+																<?=$currentUser->company;?>
+															<?php else : ?>
+																<?php echo $currentUser->firstname.' '.$currentUser->lastname; ?>
+															<?php endif; ?>
+														</h4>
+		                                                <div class="row">
+															<table class="bordered responsive-table">
+																<tr>
+														            <th class="white-text light-blue lighten-1">Nr</th>
+														            <th class="white-text light-blue lighten-1">ID</th>
+														            <th class="white-text light-blue lighten-1">Titel</th>
+														            <th class="white-text light-blue lighten-1">Status</th>
+														        </tr>
+																<?php $wc = 1; ?>
+																<?php foreach($webbooks as $w) : ?>
+																	<tr>
+																		<td class="black-text">
+																			<?=$wc;?>
+																		</td>
+																		<td class="black-text">
+																			<?=$w->id;?>
+																		</td>
+																		<td class="black-text">
+																			<?=$w->title;?>
+																		</td>
+																		<td class="black-text">
+																			<?php echo $w->active == 1 ? '<span class="teal-text text-accent-3">akvit</span>' : '<span class="pink-text text-lighten-1">inaktiv</span>'; ?>
+																		</td>
+																	</tr>
+																	<?php $wc++; ?>
+																<?php endforeach; ?>
+															</table>
+		                                                </div>
+													</div>
+		                                            <div class="modal-footer">
+		                                                    <div class="col s12 m12 l6">
+		                                                        <a class="btn waves-effect fullsize light-blue lighten-1 modal-action modal-close waves-light" href="#!">Schließen <i class="material-icons left">arrow_back</i></a>
+		                                                    </div>
+		                                                    <div class="col s12 m12 l6">
+		                                                        <a class="btn waves-effect waves-light fullsize light-blue lighten-1" href="<?php echo $url->get("adminaccount/delete/".$a->id) ?>">
+		                                    			            Zu den Webooks<i class="material-icons right">arrow_forward</i>
+		                                    			        </a>
+		                                                    </div>
+		                                            </div>
+
+		                                          </div>
+												</td>
+											</tr>
+										<?php endif; ?>
+                                    </table>
+                                </div>
+                                <div class="row">
+                                    <div class="col s12 m12 l6">
+                                        <a class="btn waves-effect waves-light fullsize light-blue lighten-1 modal-trigger" href="#cinfo<?php echo $currentUser->id; ?>">
+                                            Kunden-Info<i class="material-icons left">info</i>
+                                        </a>
+                                        <div id="cinfo<?php echo $currentUser->id; ?>" class="modal modal-fixed-footer">
+                                        <div class="modal-content">
+                                          <h4>Info: <strong><?php echo $currentUser->firstname.' '.$currentUser->lastname; ?></strong></h4>
+                                            <div class="row">
+                                                <table class="bordered responsive-table">
+													<tr>
+														<td class="black-text">
+															<strong>Vorname:</strong>
+														</td>
+														<td class="black-text">
+															<?=$currentUser->firstname;?>
+														</td>
+													</tr>
+													<tr>
+														<td class="black-text">
+															<strong>Nachname:</strong>
+														</td>
+														<td class="black-text">
+															<?=$currentUser->lastname;?>
+														</td>
+													</tr>
+                                                    <tr>
+                                                        <td class="black-text">
+                                                            <strong>Email:</strong>
+                                                        </td>
+                                                        <td class="black-text">
+                                                            <?=$currentUser->email;?>
+                                                        </td>
+                                                    </tr>
+                                                    <?php if($currentUser->company != '---') : ?>
+                                                        <tr>
+                                                            <td class="black-text">
+                                                                <strong>Firma/Organisation:</strong>
+                                                            </td>
+                                                            <td class="black-text">
+                                                                <?=$currentUser->company;?>
+                                                            </td>
+                                                        </tr>
+                                                    <?php endif; ?>
+                                                    <?php if($currentUser->phone != '---') : ?>
+                                                        <tr>
+                                                            <td class="black-text">
+                                                                <strong>Telefon:</strong>
+                                                            </td>
+                                                            <td class="black-text">
+                                                                <?=$currentUser->phone;?>
+                                                            </td>
+                                                        </tr>
+                                                    <?php endif; ?>
+                                                    <tr>
+                                                        <td class="black-text">
+                                                            <strong>Straße:</strong>
+                                                        </td>
+                                                        <td class="black-text">
+                                                            <?=$currentUser->street;?>
+                                                        </td>
+                                                    </tr>
+                                                    <tr>
+                                                        <td class="black-text">
+                                                            <strong>PLZ:</strong>
+                                                        </td>
+                                                        <td class="black-text">
+                                                            <?=$currentUser->zip;?>
+                                                        </td>
+                                                    </tr>
+                                                    <tr>
+                                                        <td class="black-text">
+                                                            <strong>Stadt:</strong>
+                                                        </td>
+                                                        <td class="black-text">
+                                                            <?=$currentUser->city;?>
+                                                        </td>
+                                                    </tr>
+                                                    <tr>
+                                                        <td class="black-text">
+                                                            <strong>Land:</strong>
+                                                        </td>
+                                                        <td class="black-text">
+                                                            <?php echo Land::getLand($currentUser->land)->title; ?>
+                                                        </td>
+                                                    </tr>
+                                                </table>
+                                            </div>
+                                        </div>
+										<div class="modal-footer">
+                                                <div class="col s12 m12 l12">
+                                                    <a class="btn waves-effect fullsize light-blue lighten-1 modal-action modal-close waves-light" href="#!">Schließen <i class="material-icons left">arrow_back</i></a>
+                                                </div>
+                                        </div>
+                                      </div>
+                                    </div>
+                                    <div class="col s12 m12 l6">
+                                        <?php if($a->active == 0) : ?>
+                                            <a class="btn black-text waves-effect waves-light fullsize teal accent-3" href="<?php echo $url->get("adminaccount/activate/".$a->id) ?>">
+                        			            Aktivieren<i class="material-icons right">power_settings_new</i>
+                        			        </a>
+                                        <?php else : ?>
+                                            <a class="btn waves-effect waves-light fullsize pink lighten-1" href="<?php echo $url->get("adminaccount/deactivate/".$a->id) ?>">
+                        			            Deaktivieren<i class="material-icons right">power_settings_new</i>
+                        			        </a>
+                                        <?php endif; ?>
+                                    </div>
+                                </div>
+                                <div class="row">
+                                    <div class="col s12 m12 l6">
+                                        <a class="btn waves-effect fullsize light-blue lighten-1 modal-trigger waves-light" href="#mailto<?=$currentUser->id;?>">E-Mail an Kunde <i class="material-icons left">email</i></i></a>
+										<div id="mailto<?php echo $currentUser->id; ?>" class="modal">
+										<div class="modal-content">
+										<h4>Email an: <strong><?php echo $currentUser->company != '---' ? $currentUser->company.' ('.$currentUser->lastname.', '.$currentUser->firstname.')' : $currentUser->firstname.' '.$currentUser->lastname; ?></strong></h4>
+										<form action="adminaccount/sendmail/<?=$currentUser->id;?>" id="sendmail" method="post">
+											<div class="row">
+												
+											</div>
+										</form>
+										<div class="modal-footer">
+											<div class="row">
+												<div class="col s12 m12 l6">
+													<a class="btn waves-effect fullsize light-blue lighten-1 modal-action modal-close waves-light" href="#!">Schließen <i class="material-icons left">arrow_back</i></a>
+												</div>
+												<div class="col s12 m12 l6">
+													<a class="btn black-text waves-effect waves-light fullsize teal accent-3" href="<?php echo $url->get("adminaccount/delete/".$a->id) ?>">
+														Senden<i class="material-icons right">send</i>
+													</a>
+												</div>
+											</div>
+										</div>
+										</div>
+									</div>
+                                    </div>
+                                    <?php if($a->active == 1) : ?>
+                                        <div class="col s12 m12 l6">
+                                            <a class="btn waves-effect fullsize light-blue disabled lighten-1 waves-light" href="#!">Löschen <i class="material-icons right">delete</i></i></a>
+                                        </div>
+                                    <?php else : ?>
+                                        <div class="col s12 m12 l6">
+                                            <a class="btn waves-effect fullsize pink lighten-1 modal-trigger waves-light" href="#delcs<?=$currentUser->id;?>">Löschen <i class="material-icons right">delete</i></i></a>
+                                            <div id="delcs<?php echo $currentUser->id; ?>" class="modal">
+                                            <div class="modal-content">
+                                              <h4>Löschen von: <strong><?php echo $currentUser->firstname.' '.$currentUser->lastname; ?></strong></h4>
+                                                <div class="row">
+
+                                                </div>
+
+                                            <div class="modal-footer">
+                                                <div class="row">
+                                                    <div class="col s12 m12 l6">
+                                                        <a class="btn waves-effect fullsize light-blue lighten-1 modal-action modal-close waves-light" href="#!">Schließen <i class="material-icons left">arrow_back</i></a>
+                                                    </div>
+                                                    <div class="col s12 m12 l6">
+                                                        <a class="btn waves-effect waves-light fullsize pink lighten-1" href="<?php echo $url->get("adminaccount/delete/".$a->id) ?>">
+                                    			            Löschen bestätigen<i class="material-icons right">delete</i>
+                                    			        </a>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                            </div>
+                                          </div>
+                                        </div>
+                                    <?php endif; ?>
+                                </div>
+                            </div>
+                        </div>
+                    </li>
+                <?php endforeach; ?>
+            </ul>
+        </div>
+    </div>
+</div>

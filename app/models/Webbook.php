@@ -27,6 +27,19 @@ class Webbook extends BaseModel
         return $webbooks;
     }
 
+	public static function getAccWebbooks($aid)
+	{
+		$webbooks = Webbook::find("account_id = ".$aid);
+		return count($webbooks);
+	}
+
+	public static function getAwebbooks($aid)
+	{
+		$webbooks = Webbook::find("account_id = ".$aid);
+		return $webbooks;
+	}
+
+
 	public static function getticketcounternext($uid)
 	{
 		$ticket = Ticket::find("user_id = ".$uid);

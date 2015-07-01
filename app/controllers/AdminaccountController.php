@@ -4,7 +4,42 @@ class AdminaccountController extends ControllerBase
 {
     public function indexAction()
     {
+        $accounts = Account::find();
+        $this->view->setVars([
+            'accounts' => $accounts
+        ]);
+    }
 
+    public function activateAction($aid)
+    {
+        $account = Account::findFirstById($aid);
+        $tariff = Tariff::findFirst("id = ".$account->tariff_id);
+        $account->active = 1;
+        $account->active_from = date('Y-m-d H:i:s');
+        $account->active_untill = date('Y-m-d H:i:s', strtotime('+1 year'));
+        if(!($account->update()))
+        {
+            print_r('Error');
+        }
+        else
+        {
+            $this->response->redirect("adminaccount");
+        }
+    }
+
+    public function deactivateAction($aid)
+    {
+        $account = Account::findFirstById($aid);
+
+        $account->active = 0;
+        if(!($account->update()))
+        {
+            print_r('error');
+        }
+        else
+        {
+            $this->response->redirect("adminaccount");
+        }
     }
 
     public function createAction($tariff, $active)
