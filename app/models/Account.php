@@ -8,16 +8,9 @@ class Account extends BaseModel
         $this->belongsTo('tariff_id', 'Tariff', 'id');
     }
 
-	public static function getCustomerAccounts()
+	public static function getCustomerAccount($cid)
 	{
-		$accounts = Account::find();
-		$u = array();
-
-		foreach ($accounts as $a)
-		{
-			$u[] = User::find("id = ".$a->user_id);
-		}
-
-		return $u;
+		$account = Account::findFirst("user_id = ".$cid);
+		return $account;
 	}
 }

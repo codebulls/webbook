@@ -4,22 +4,17 @@ class AdminuserController extends ControllerBase
 {
 	public function indexAction()
 	{
-		$customers = User::find("user_group = 1");
-		$admins = User::find("user_group = 2");
-
 		$this->view->setVars([
-			'customers' => $customers,
-			'admins' => $admins
+			'customers' => User::find("user_group = 1"),
+			'admins' => User::find("user_group = 2")
 		]);
 	}
 
 	public function adduserAction()
 	{
-		$t = Tariff::find();
-		$l = Land::find();
         $this->view->setVars([
-            'tariffe' => $t,
-            'lands' => $l
+            'tariffe' => Tariff::find(),
+            'lands' => Land::find()
         ]);
 	}
 
@@ -28,13 +23,52 @@ class AdminuserController extends ControllerBase
 
 	}
 
+	public function updateAction($uid, $route)
+	{
+		$msg = '';
+
+		if(!empty($uid) && !empty($route) && isset($_POST['action']) && $_POST['action'] == 'updatecustomer')
+		{
+
+			$user = User::findFirstById($uid);
+
+			foreach($_POST as $k => $v)
+			{
+				if(!empty($v))
+				{
+					$user->$k = $v;
+				}
+			}
+
+			if($user->update())
+			{
+				$this->response->redirect($route);
+				return;
+			}
+		}
+
+		$this->dispatcher->forward(array(
+			"controller" => "errors",
+			"action" => "showerror",
+			"params" => $msg
+		));
+	}
+
+	public function deleteAction($uid, $route)
+	{
+		if(User::findFirstById($uid)->delete())
+		{
+			$this->response->redirect($route);
+			return;
+		}
+
+	}
+
 	public function checkadmindataAction()
 	{
 		$this->view->disable();
 		$error = array();
-		$p = $_POST;
-
-		foreach($p as $k=>$v)
+		foreach($_POST as $k=>$v)
 		{
 			if(empty($v))
 			{
@@ -42,7 +76,7 @@ class AdminuserController extends ControllerBase
 			}
 		}
 
-		if (filter_var($p['email'], FILTER_VALIDATE_EMAIL) === false) {
+		if (filter_var($_POST['email'], FILTER_VALIDATE_EMAIL) === false) {
 			$error[] = 'email';
 		}
 
@@ -60,9 +94,7 @@ class AdminuserController extends ControllerBase
 	{
 		$this->view->disable();
         $error = array();
-        $p = $_POST;
-
-		foreach ($p as $k => $v) {
+		foreach ($_POST as $k => $v) {
 			if(empty($v))
 			{
 				$error[] = $k;
@@ -78,16 +110,18 @@ class AdminuserController extends ControllerBase
 		}
 	}
 
-	public function saveadminAction()
+	public function saveadminAction($route)
 	{
+		$error = array();
+
 		if(isset($_POST['action']) && $_POST['action'] == 'saveadmin')
 		{
 			$user = new User();
-			$user->email = $_POST['aaemail'];
+			$user->email = isset($_POST['aaemail']) && !empty($_POST['aaemail']) ? $_POST['aaemail'] : $error[] = 'email';
 			$user->password = password_hash($_POST['aapassword'], PASSWORD_BCRYPT);
-			$user->prefix = $_POST['aaprefix'];
-			$user->firstname = $_POST['aafirstname'];
-			$user->lastname = $_POST['aalastname'];
+			$user->prefix = isset($_POST['aaprefix']) && !empty($_POST['aaprefix']) ? $_POST['aaprefix'] : '';
+			$user->firstname = isset($_POST['aafirstname']) && !empty($_POST['aafirstname']) ? $_POST['aafirstname'] : $error[] = 'firstname';
+			$user->lastname = isset($_POST['aalastname']) && !empty($_POST['aalastname']) ? $_POST['aalastname'] : $error[] = 'lastname';
 			$user->company = '---';
 			$user->phone = '---';
 			$user->street = '---';
@@ -99,13 +133,8 @@ class AdminuserController extends ControllerBase
 			$user->hidden = 0;
 			$user->deleted = 0;
 
-			$result = $user->create();
-
-			if(!$result)
+			if($user->create() && count($error) < 1)
 			{
-				print_r($user->getMessages());
-			}
-			else {
 				$this->response->redirect("adminuser");
 			}
 		}
@@ -113,37 +142,19 @@ class AdminuserController extends ControllerBase
 
 	public function saveuserAction()
 	{
+		$error = array();
 		if(isset($_POST['action']) && $_POST['action'] == 'save')
 		{
 			$user = new User();
-			if(!empty($_POST['aprefix']))
-			{
-				$user->prefix = $_POST['aprefix'];
-			}
-			else {
-				$user->prefix = '---';
-			}
 
-			$user->firstname = $_POST['afirstname'];
-			$user->lastname = $_POST['alastname'];
-			$user->email = $_POST['aemail'];
+			$user->prefix = isset($_POST['aprefix']) ? (string)$_POST['aprefix'] : '';
+
+			$user->firstname = isset($_POST['afirstname']) && !empty($_POST['afirstname']) ? $_POST['afirstname'] : $error[] = 'firstname';
+			$user->lastname = isset($_POST['alastname']) && !empty($_POST['alastname']) ? $_POST['alastname'] : $error[] = 'lastname';
+			$user->email = isset($_POST['aemail']) && !empty($_POST['aemail']) ? $_POST['aemail'] : $error[] = 'email';
 			$user->password = password_hash($_POST['apassword'], PASSWORD_BCRYPT);
-			if(!empty($_POST['aphone']))
-			{
-				$user->phone = $_POST['aphone'];
-			}
-			else {
-				$user->phone = '---';
-			}
-
-			if(!empty($_POST['acompany']))
-			{
-				$user->company = $_POST['acompany'];
-			}
-			else {
-				$user->company = '---';
-			}
-
+			$user->phone = isset($_POST['aphone']) && !empty($_POST['aphone']) ? $_POST['aphone'] : '---';
+			$user->company = isset($_POST['acompany']) && !empty($_POST['acompany']) ? $_POST['acompany'] : '---';
 			$user->street = $_POST['astreet'];
 			$user->zip = $_POST['azip'];
 			$user->city = $_POST['acity'];

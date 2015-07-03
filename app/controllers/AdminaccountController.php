@@ -10,7 +10,7 @@ class AdminaccountController extends ControllerBase
         ]);
     }
 
-    public function activateAction($aid)
+    public function activateAction($aid, $route)
     {
         $account = Account::findFirstById($aid);
         $tariff = Tariff::findFirst("id = ".$account->tariff_id);
@@ -23,11 +23,11 @@ class AdminaccountController extends ControllerBase
         }
         else
         {
-            $this->response->redirect("adminaccount");
+            $this->response->redirect($route);
         }
     }
 
-    public function deactivateAction($aid)
+    public function deactivateAction($aid, $route)
     {
         $account = Account::findFirstById($aid);
 
@@ -38,7 +38,7 @@ class AdminaccountController extends ControllerBase
         }
         else
         {
-            $this->response->redirect("adminaccount");
+            $this->response->redirect($route);
         }
     }
 

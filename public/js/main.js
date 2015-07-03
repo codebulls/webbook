@@ -319,7 +319,7 @@ $(document).ready(function(){
             {
                 $('#formConfirmTrigger').click();
 
-                $('#checkPdfData').parent().html('<button class="btn waves-effect waves-light fullsize light-blue lighten-1" type="submit" id="checkContent" name="action" value="wbcreate">Speichern<i class="mdi-content-send right"></i></button>');
+                $('#checkPdfData').parent().html('<button class="btn waves-effect waves-light fullsize teal accent-3 black-text" type="submit" id="checkContent" name="action" value="wbcreate">Speichern<i class="material-icons black-text right">done</i></button>');
             }
             else
             {

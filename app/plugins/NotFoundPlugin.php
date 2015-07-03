@@ -35,7 +35,7 @@ class NotFoundPlugin extends Plugin
 			}
 		}
 
-		#print_r($exception);exit;
+		print_r($exception);exit;
 		$dispatcher->forward(array(
 			'controller' => 'errors',
 			'action'     => 'show500'

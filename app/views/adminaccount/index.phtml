@@ -325,11 +325,11 @@ $url = new Url();
                                     </div>
                                     <div class="col s12 m12 l6">
                                         <?php if($a->active == 0) : ?>
-                                            <a class="btn black-text waves-effect waves-light fullsize teal accent-3" href="<?php echo $url->get("adminaccount/activate/".$a->id) ?>">
+                                            <a class="btn black-text waves-effect waves-light fullsize teal accent-3" href="<?php echo $url->get("adminaccount/activate/".$a->id."/adminaccount") ?>">
                         			            Aktivieren<i class="material-icons right">power_settings_new</i>
                         			        </a>
                                         <?php else : ?>
-                                            <a class="btn waves-effect waves-light fullsize pink lighten-1" href="<?php echo $url->get("adminaccount/deactivate/".$a->id) ?>">
+                                            <a class="btn waves-effect waves-light fullsize pink lighten-1" href="<?php echo $url->get("adminaccount/deactivate/".$a->id."/adminaccount") ?>">
                         			            Deaktivieren<i class="material-icons right">power_settings_new</i>
                         			        </a>
                                         <?php endif; ?>
@@ -343,7 +343,7 @@ $url = new Url();
 										<h4>Email an: <strong><?php echo $currentUser->company != '---' ? $currentUser->company.' ('.$currentUser->lastname.', '.$currentUser->firstname.')' : $currentUser->firstname.' '.$currentUser->lastname; ?></strong></h4>
 										<form action="adminaccount/sendmail/<?=$currentUser->id;?>" id="sendmail" method="post">
 											<div class="row">
-												
+
 											</div>
 										</form>
 										<div class="modal-footer">
