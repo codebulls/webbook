@@ -1,0 +1,74 @@
+<?php
+use Phalcon\Mvc\Url;
+use \Phalcon\Tag as Tag;
+$url = new Url();
+?>
+<div class="section">
+	<div class="container">
+	    <div class="row">
+	        <div class="l12 s12">
+	            <h1 class="header center white-text lighten-1 accent-3">Webbooks Verwaltung</h1>
+	        </div>
+	    </div>
+	</div>
+</div>
+<div class="divider"></div>
+<div class="section">
+  <div class="container">
+    <div class="row marginNull">
+      <div class="col s12 m12 l12">
+          <?=Tag::linkTo(array("/admincenter", 'Zum Admin-Center<i class="material-icons left">home</i>', 'class' => 'btn waves-effect waves-light fullsize light-blue lighten-1'));?>
+      </div>
+    </div>
+  </div>
+</div>
+<div class="divider"></div>
+<div class="section">
+	<div class="container">
+		<div class="row">
+			<h4 class="white-text center">Geschäftskunden</h4>
+		</div>
+		<div class="row">
+			<ul class="collapsible" data-collapsible="accordion">
+				<?php foreach($businessusers as $bu) : ?>
+				<?php $plist = Project::getProjects($bu->id); ?>
+					<li>
+						<div class="collapsible-header">
+							<i class="material-icons">location_city</i>
+							<span class="right">Firma/Organisation: <strong><?=$bu->company;?></strong></span>
+						</div>
+						<div class="collapsible-body white">
+							<div class="container">
+								<div class="row">
+									<?php foreach($plist as $p) : ?>
+										<h5 class="black-text"><?=$p->title;?></h5>
+									<?php endforeach; ?>
+								</div>
+							</div>
+						</div>
+					</li>
+				<?php endforeach; ?>
+			</ul>
+		</div>
+	</div>
+</div>
+<div class="divider"></div>
+<div class="section">
+	<div class="container">
+		<div class="row">
+			<h4 class="white-text center">Privatkunden</h4>
+		</div>
+		<div class="row">
+			<ul class="collapsible" data-collapsible="accordion">
+				<?php foreach($privateuser as $pu) : ?>
+					<li>
+						<div class="collapsible-header">
+							<i class="black-text material-icons">account_circle</i>
+							<span class="right">Name: <strong><?php echo $pu->lastname.', '.$pu->firstname; ?></strong></span>
+						</div>
+					</li>
+				<?php endforeach; ?>
+			</ul>
+		</div>
+	</div>
+</div>

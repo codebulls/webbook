@@ -342,7 +342,7 @@ $url = new Url();
 		                                            <div class="modal-content">
 		                                              <h4>Löschen von: <strong><?php echo $c->firstname.' '.$c->lastname; ?></strong></h4>
 		                                                <div class="row">
-
+															<p class="pink-text text-lighten-1">Achtung! Es werden alle zugehörigen Daten inkl. aller Webbooks gelöscht. Wenn Sie sich sicher sind, dann klicken Sie auf <strong>"Löschen bestätigen"</strong>.</p>
 		                                                </div>
 
 		                                            <div class="modal-footer">
@@ -383,8 +383,101 @@ $url = new Url();
 						<?php foreach($admins as $a) : ?>
 							<li>
 								<div class="collapsible-header">
-									<i class="material-icons">person</i>
+									<i class="material-icons">account_circle</i>
 									<span class="right"><strong>Name:</strong> <?php echo $a->firstname.' '.$a->lastname; ?></span>
+								</div>
+								<div class="collapsible-body white">
+									<div class="container">
+										<div class="row">
+											<table class="bordered">
+												<tr>
+													<td class="black-text">
+														<strong>Vorname:</strong>
+													</td>
+													<td class="black-text">
+														<?=$a->firstname;?>
+													</td>
+												</tr>
+												<tr>
+													<td class="black-text">
+														<strong>Nachname:</strong>
+													</td>
+													<td class="black-text">
+														<?=$a->lastname;?>
+													</td>
+												</tr>
+												<tr>
+													<td class="black-text">
+														<strong>E-Mail:</strong>
+													</td>
+													<td class="black-text">
+														<?=$a->email;?>
+													</td>
+												</tr>
+												<tr>
+													<td class="black-text">
+														<strong>Erstellt am:</strong>
+													</td>
+													<td class="black-text">
+														<?php echo date('d.m.Y', strtotime($a->created_at)); ?>
+													</td>
+												</tr>
+												<?php if($a->updated_at != NULL) : ?>
+													<tr>
+														<td class="black-text">
+															<strong>Geändert am:</strong>
+														</td>
+														<td class="black-text">
+															<?php echo date('d.m.Y', strtotime($a->updated_at)); ?>
+														</td>
+													</tr>
+												<?php endif; ?>
+											</table>
+										</div>
+										<div class="row">
+											<div class="col s12 m12 l6">
+												<a class="btn waves-effect fullsize light-blue lighten-1 modal-trigger waves-light" href="#editad<?=$a->id;?>">Bearbeiten <i class="material-icons left">edit</i></i></a>
+												<div id="editad<?php echo $a->id; ?>" class="modal">
+													<div class="modal-content">
+														<h4>Bearbeiten von: <strong><?php echo $a->firstname.' '.$a->lastname; ?></strong></h4>
+														<div class="row">
+															<form action="adminuser/updateadmin/<?=$a->id;?>/adminuser" method="post">
+																<div class="input-field col s12 m12 l12 black-text">
+																	<input name="firstname" type="text" value="<?=$a->firstname;?>" class="validate" />
+																	<label for="firstname">Vorname:</label>
+																</div>
+																<div class="input-field col s12 m12 l12 black-text">
+																	<input name="lastname" type="text" value="<?=$a->lastname;?>">
+																	<label for="lastname">Nachname:</label>
+																</div>
+																<div class="input-field col s12 m12 l12 black-text">
+																	<input name="email" type="text" value="<?=$a->email;?>">
+																	<label for="email">E-Mail:</label>
+																</div>
+														</div>
+													</div>
+													<div class="modal-footer">
+														<div class="col s12 m12 l6">
+															<a class="btn waves-effect fullsize light-blue lighten-1 modal-action modal-close waves-light" href="#!">Schließen <i class="material-icons left">arrow_back</i></a>
+														</div>
+														<div class="col s12 m12 l6">
+															<button class="btn waves-effect waves-light fullsize teal accent-3 black-text" type="submit" id="createDirect" name="action" value="updateadmin">Speichern
+																	<i class="material-icons right black-text">done</i>
+															</button>
+															</form>
+														</div>
+													</div>
+												</div>
+											</div>
+											<div class="col s12 m12 l6">
+												<?php if($loggedadmin->id == $a->id) : ?>
+													<a class="btn waves-effect fullsize pink lighten-1 waves-light disabled" href="#">Löschen <i class="material-icons right">delete</i></i></a>
+												<?php else : ?>
+													<a class="btn waves-effect fullsize pink lighten-1 modal-trigger waves-light" href="#delad<?=$a->id;?>">Löschen <i class="material-icons right">delete</i></i></a>
+												<?php endif; ?>
+											</div>
+										</div>
+									</div>
 								</div>
 							</li>
 						<?php endforeach; ?>

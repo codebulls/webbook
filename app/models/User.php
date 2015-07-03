@@ -2,6 +2,7 @@
 
 class User extends BaseModel
 {
+	var $projects = array();
 	
 	public function initialize()
 	{
@@ -14,4 +15,9 @@ class User extends BaseModel
 		$user = User::findFirstById($uid);
 		return $user;
 	}
+	
+	public static function getUsers($company, $order)
+	{
+		return User::find($company.' and user_group = 1 order by '.$order.' asc');
+	}	
 }

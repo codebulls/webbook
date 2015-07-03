@@ -5,6 +5,7 @@ class AdminuserController extends ControllerBase
 	public function indexAction()
 	{
 		$this->view->setVars([
+			'loggedadmin' => $this->getAdmin(),
 			'customers' => User::find("user_group = 1"),
 			'admins' => User::find("user_group = 2")
 		]);
@@ -21,6 +22,25 @@ class AdminuserController extends ControllerBase
 	public function addadminAction()
 	{
 
+	}
+	
+	public function updateadminAction($uid, $route)
+	{
+		if(!empty($uid) && !empty($route) && isset($_POST['action']) && $_POST['action'] == 'updateadmin')
+		{
+			$error = array();
+			$user = User::findFirstById($uid);
+			foreach($_POST as $k => $v)
+			{
+				$user->$k = isset($k) && !empty($v) ? $v : $error[] = $k;
+			}
+			if($user->update())
+			{
+				$this->response->redirect($route);
+				return;
+			}
+		}
+		//Weiterleitung an eine Fehlerseite
 	}
 
 	public function updateAction($uid, $route)
@@ -79,15 +99,9 @@ class AdminuserController extends ControllerBase
 		if (filter_var($_POST['email'], FILTER_VALIDATE_EMAIL) === false) {
 			$error[] = 'email';
 		}
+	
+		echo count($error) < 1 ? json_encode(array("res" => "ok")) : json_encode($error);
 
-
-		if(count($error) < 1)
-		{
-			echo json_encode(array('res' => 'ok'));
-		}
-		else {
-			echo json_encode($error);
-		}
 	}
 
 	public function checkadduserdataAction()
@@ -100,14 +114,9 @@ class AdminuserController extends ControllerBase
 				$error[] = $k;
 			}
 		}
-
-		if(count($error) < 1)
-		{
-			echo json_encode(array('res' => 'ok'));
-		}
-		else {
-			echo json_encode($error);
-		}
+		
+		echo count($error) < 1 ? json_encode(array("res" => "ok")) : json_encode($error);
+		
 	}
 
 	public function saveadminAction($route)
@@ -135,8 +144,11 @@ class AdminuserController extends ControllerBase
 
 			if($user->create() && count($error) < 1)
 			{
-				$this->response->redirect("adminuser");
+				$this->response->redirect($route);
+				return;
 			}
+			
+			print_r($user->getMessages());
 		}
 	}
 
@@ -155,52 +167,29 @@ class AdminuserController extends ControllerBase
 			$user->password = password_hash($_POST['apassword'], PASSWORD_BCRYPT);
 			$user->phone = isset($_POST['aphone']) && !empty($_POST['aphone']) ? $_POST['aphone'] : '---';
 			$user->company = isset($_POST['acompany']) && !empty($_POST['acompany']) ? $_POST['acompany'] : '---';
-			$user->street = $_POST['astreet'];
-			$user->zip = $_POST['azip'];
-			$user->city = $_POST['acity'];
-
-			if(!empty($_POST['asteuerid']))
-			{
-				$user->steuerid = $_POST['asteuerid'];
-			}
-			else {
-				$user->steuerid = '---';
-			}
-
-			if(!empty($_POST['aland']))
-			{
-				$user->land = $_POST['aland'];
-			}
-			else
-			{
-				$user->land = '---';
-			}
+			$user->street = isset($_POST['astreet']) && !empty($_POST['astreet']) ? $_POST['astreet'] : $error[] = 'street';
+			$user->zip = isset($_POST['azip']) && !empty($_POST['azip']) ? $_POST['azip'] : $error[] = 'zip';
+			$user->city = isset($_POST['acity']) && !empty($_POST['acity']) ? $_POST['acity'] : $error[] = 'city';
+			$user->steuerid = isset($_POST['asteuerid']) && !empty($_POST['asteuerid']) ? $_POST['asteuerid'] : '---';
+			$user->land = isset($_POST['aland']) && !empty($_POST['aland']) ? $_POST['aland'] : $error[] = 'land';
 
 			$user->user_group = 1;
 			$user->hidden = 0;
 			$user->deleted = 0;
+			
+			$active = isset($_POST['setactive']) && $_POST['setactive'] == 1 ? 1 : 0;
 
-			if(isset($_POST['setactive']) && $_POST['setactive'] == 1)
+			if($user->create())
 			{
-				$active = 1;
-			}
-			else {
-				$active = 0;
-			}
-
-			$result = $user->create();
-
-			if(!$result)
-			{
-				print_r($user->getMessages());
-			}
-			else {
 				$this->dispatcher->forward(array(
 					"controller" => "adminaccount",
 					"action" => "create",
 					"params" => array('tariff' => $_POST['atariff'], 'active' => $active)
 				));
+				return;
 			}
+			
+			print_r($user->getMessages());
 
 		}
 	}

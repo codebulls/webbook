@@ -25,10 +25,15 @@ class Project extends BaseModel
 		$projects = Project::find("user_id = ".$cid);
 		return count($projects);
 	}
-
-	public static function getAprojects($cid)
+/*
+	public static function getAprojects($uid)
 	{
-		$projects = Project::find("user_id = ".$cid);
+		$projects = Project::find("user_id = ".$uid);
 		return $projects;
+	}*/
+	
+	public static function getProjects($uid)
+	{
+		return Project::find("user_id = ".$uid);
 	}
 }
