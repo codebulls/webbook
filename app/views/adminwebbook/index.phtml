@@ -16,8 +16,11 @@ $url = new Url();
 <div class="section">
   <div class="container">
     <div class="row marginNull">
-      <div class="col s12 m12 l12">
+      <div class="col s12 m12 l6">
           <?=Tag::linkTo(array("/admincenter", 'Zum Admin-Center<i class="material-icons left">home</i>', 'class' => 'btn waves-effect waves-light fullsize light-blue lighten-1'));?>
+      </div>
+      <div class="col s12 m12 l6">
+		<?=Tag::linkTo(array("/adminwebbook/addwb", 'Webbook hinzufügen<i class="material-icons right">add</i>', 'class' => 'btn waves-effect waves-light fullsize light-blue lighten-1'));?>
       </div>
     </div>
   </div>
@@ -29,9 +32,9 @@ $url = new Url();
 			<h4 class="white-text center">Geschäftskunden</h4>
 		</div>
 		<div class="row">
-			<ul class="collapsible" data-collapsible="accordion">
+			<ul class="collapsible" data-collapsible="accordion" id="cplists">
 				<?php foreach($businessusers as $bu) : ?>
-				<?php $plist = Project::getProjects($bu->id); ?>
+				<?php $bplist = Project::getProjects($bu->id); ?>
 					<li>
 						<div class="collapsible-header">
 							<i class="material-icons">location_city</i>
@@ -40,9 +43,131 @@ $url = new Url();
 						<div class="collapsible-body white">
 							<div class="container">
 								<div class="row">
-									<?php foreach($plist as $p) : ?>
-										<h5 class="black-text"><?=$p->title;?></h5>
+								<?php if(count($bplist) > 0) : ?>
+									<?php $pcounter = 1; ?>
+									<?php foreach($bplist as $p) : ?>
+									<?php $wlist = Webbook::getProjectWebbooks($p->id); ?>
+										<h5 class="black-text <?php echo $pcounter == 1 ? 'marginTopNull paddingTopTen' : ''; ?>"><?=$p->title;?></h5>
+										<div class="divider"></div>
+										<?php if(count($wlist) > 0) : ?>
+										<ul class="collapsible popout cpwlist" data-collapsible="accordion">
+											<?php $wcounter = 1; ?>
+											<?php foreach($wlist as $w) : ?>
+											<li>
+												<div class="collapsible-header">
+													<i class="material-icons">folder</i>
+													<span class="right"><strong>Webbook:</strong> <?php echo $w->title; ?></span>
+													<?php if($w->active == 1) : ?>
+														<span class"webbookstatus"><i class="material-icons">done_all</i></span>
+													<?php endif; ?>
+													<?php if($w->convert_confirmed == 1) : ?>
+														<span class="webbookstatus"><i class="material-icons">done</i></span>
+													<?php endif; ?>
+													<?php if($w->processing == 1) : ?>
+														<span class="webbookstatus"><i class="material-icons">settings</i></span>
+													<?php endif; ?>
+												</div>
+												<div class="collapsible-body greyBack">
+													<div class="container">
+														<div class="row">
+															<table class="bordered">
+																<th class="white-text"><strong>Nr.</strong></th>
+																<th class="white-text"><strong>Status</strong></th>
+																<th class="white-text"><strong>Freigabe</strong></th>
+																<th class="white-text"><strong>Bearbeitung</strong></th>
+																<tr>
+																	<td class="white-text"><?=$wcounter;?></td>
+																	<td class="white-text">
+																		<?php echo $w->active == 1 ? '<span class="teal-text text-accent-3">Aktiv</span>' : '<span class="pink-text text-lighten-3">Inaktiv</span>'; ?>
+																	</td>
+																	<td class="white-text">
+																		<?php echo $w->convert_confirmed == 1 ? '<span class="teal-text text-accent-3">Ja</span>' : '<span class="pink-text text-lighten-3">Nein</span>'; ?>
+																	</td>
+																	<td class="white-text">
+																		<?php echo $w->processing == 1 ? 'Ja' : 'Nein'; ?>
+																	</td>
+																</tr>
+																<tr>
+																	<td class="white-text" colspan="2">Pdf (Original)</td>
+																	<td colspan="3">
+																		<?php
+																			$pdfpath = implode("/", array_reverse(array_slice(array_reverse(explode("/", $w->pdfpath)), 0, 4)));
+																		?>
+																		<a class="blue-text text-lighten-4" href="<?php echo "http://" . $_SERVER['SERVER_NAME']."/".$pdfpath; ?>" title="Original Pdf für <?php echo $w->title; ?>" target="blank">
+																			Klicken Sie hier, um die Original Datei anzusehen.
+																		</a>
+																	</td>
+																</tr>
+																<?php if($w->active == 1) : ?>
+																<tr>
+																	<td colspan="2">WebBook-Link</td>
+																	<td colspan="3">
+																		<a href="<?php echo $w->full_link; ?>" title="WebBook: <?php echo $w->title; ?>" target="_blank">WebBook: <?php echo $w->title; ?></a>
+																	</td>
+																</tr>
+																<?php endif; ?>
+															</table>
+														</div>
+														<div class="row">
+															<div class="col s12 m12 l6">
+																<a class="btn waves-effect waves-light fullsize light-blue lighten-1" href="<?php echo $url->get("adminwebbook/edit/".$w->id."/".$p->id."/".$bu->id) ?>">
+		                                    			            Bearbeiten<i class="material-icons left">edit</i>
+		                                    			        </a>
+															</div>
+															<div class="col s12 m12 l6">
+																<a class="btn waves-effect waves-light fullsize light-blue lighten-1 modal-trigger" href="#chfile-<?=$w->id;?>">
+																	Pdf tauschen<i class="material-icons right">autorenew</i>
+																</a>
+																<div id="chfile-<?=$w->id;?>" class="modal">
+																	<div class="modal-content">
+																		<div class="row">
+																			<h4 class="center">Pdf tauschen (Webbook-ID: <strong><?=$w->id;?></strong>)</h4>
+																		</div>
+																		<table class="bordered">
+																			<tr>
+																				<td class="black-text"><strong>Name:</strong></td> 
+																				<td class="black-text">
+																					<?php echo basename($w->pdfpath); ?>
+																				</td>
+																			</tr>
+																			<tr>
+																				<td class="black-text"><strong>Größe:</strong></td>
+																				<td class="black-text">
+																					<?php echo round((filesize($w->pdfpath)/1024), 2).' KByte'; ?>
+																				</td>
+																			</tr>
+																		</table>
+																		<form id="chbfile" name="chbfile" action="/adminwebbook/chfile/<?=$w->id;?>/adminwebbook" method="post">
+																		<div class="row">
+
+																		</div>
+																	</div>
+																	<div class="modal-footer">
+																		<div class="col s12 m12 l6">
+																			<a class="btn waves-effect fullsize light-blue lighten-1 modal-action modal-close waves-light" href="#!">Schließen <i class="material-icons left">close</i></a>
+																		</div>
+																		<div class="col s12 m12 l6">
+																			<button class="btn waves-effect waves-light fullsize teal accent-3 black-text" type="submit" id="createDirect" name="action" value="procreate">Aktualisieren
+																				<i class="material-icons right black-text">done</i>
+																			</button>
+																		</div>
+																		</form>
+																	</div>
+																</div>
+															</div>
+														</div>
+												</li>
+												<?php $wcounter++; ?>
+											<?php endforeach; ?>
+										</ul>
+										<?php else : ?>
+											<p>Zu diesem Projekt sind keine Webbooks gefunden worden.</p>
+										<?php endif; ?>
+										<?php $pcounter++; ?>
 									<?php endforeach; ?>
+								<?php else : ?>
+									<p class="black-text">Es liegen für diesen Kunden keine Projekte vor.</p>
+								<?php endif; ?>
 								</div>
 							</div>
 						</div>
@@ -59,12 +184,160 @@ $url = new Url();
 			<h4 class="white-text center">Privatkunden</h4>
 		</div>
 		<div class="row">
-			<ul class="collapsible" data-collapsible="accordion">
-				<?php foreach($privateuser as $pu) : ?>
+			<ul class="collapsible" data-collapsible="accordion" id="cpplist">
+				<?php foreach($privateusers as $pu) : ?>
+				<?php $pplist = Project::getProjects($pu->id); ?>
 					<li>
 						<div class="collapsible-header">
 							<i class="black-text material-icons">account_circle</i>
 							<span class="right">Name: <strong><?php echo $pu->lastname.', '.$pu->firstname; ?></strong></span>
+						</div>
+						<div class="collapsible-body white">
+							<div class="container">
+								<div class="row">
+									<?php if(count($pplist) > 0) : ?>
+										<?php $ppcounter = 1; ?>
+										<?php foreach($pplist as $p) : ?>
+											<?php $wplist = Webbook::getProjectWebbooks($p->id); ?>
+											<h5 class="black-text <?php echo $ppcounter == 1 ? 'marginTopNull paddingTopTen' : ''; ?>"><?=$p->title;?></h5>
+											<div class="divider"></div>
+											<?php if(count($wplist) > 0) : ?>
+											<ul class="collapsible popout cpwlist" data-collapsible="accordion">
+												<?php $wpcounter = 1; ?>
+												<?php foreach($wplist as $w) : ?>
+													<li>
+														<div class="collapsible-header">
+															<i class="material-icons">folder</i>
+															<span class="right"><strong>Webbook:</strong> <?php echo $w->title; ?></span>
+															<?php if($w->active == 1) : ?>
+																<span class"webbookstatus"><i class="material-icons">done_all</i></span>
+															<?php endif; ?>
+															<?php if($w->convert_confirmed == 1) : ?>
+																<span class="webbookstatus"><i class="material-icons">done</i></span>
+															<?php endif; ?>
+															<?php if($w->processing == 1) : ?>
+																<span class="webbookstatus"><i class="material-icons">settings</i></span>
+															<?php endif; ?>
+														</div>
+														<div class="collapsible-body greyBack">
+															<div class="container">
+																<div class="row">
+																	<table class="bordered">
+																		<th class="white-text"><strong>Nr.</strong></th>
+																		<th class="white-text"><strong>Status</strong></th>
+																		<th class="white-text"><strong>Freigabe</strong></th>
+																		<th class="white-text"><strong>Bearbeitung</strong></th>
+																		<tr>
+																			<td class="white-text"><?=$wpcounter;?></td>
+																			<td class="white-text">
+																				<?php echo $w->active == 1 ? '<span class="teal-text text-accent-3">Aktiv</span>' : '<span class="pink-text text-lighten-3">Inaktiv</span>'; ?>
+																			</td>
+																			<td class="white-text">
+																				<?php echo $w->convert_confirmed == 1 ? '<span class="teal-text text-accent-3">Ja</span>' : '<span class="pink-text text-lighten-3">Nein</span>'; ?>
+																			</td>
+																			<td class="white-text">
+																				<?php echo $w->processing == 1 ? 'Ja' : 'Nein'; ?>
+																			</td>
+																		</tr>
+																		<tr>
+																			<td class="white-text" colspan="1">Pdf (Original)</td>
+																			<td colspan="2">
+																				<?php
+																					$pdfpath = implode("/", array_reverse(array_slice(array_reverse(explode("/", $w->pdfpath)), 0, 4)));
+																				?>
+																				<a class="blue-text text-lighten-4" href="<?php echo "http://" . $_SERVER['SERVER_NAME']."/".$pdfpath; ?>" title="Original Pdf für <?php echo $w->title; ?>" target="blank">
+																					Klicken Sie hier, um die Original Datei anzusehen.
+																				</a>
+																			</td>
+																		</tr>
+																		<?php if($w->updated_at != NULL) : ?>
+																			<tr>
+																				<td class="white-text"><strong>Aktualisiert am:</strong></td>
+																				<td class="white-text"><?=$w->updated_at;?></td>
+																			</tr>
+																		<?php endif; ?>
+																		<?php if($w->active == 1) : ?>
+																		<tr>
+																			<td colspan="2">WebBook-Link</td>
+																			<td colspan="3">
+																				<a href="<?php echo $w->full_link; ?>" title="WebBook: <?php echo $w->title; ?>" target="_blank">WebBook: <?php echo $w->title; ?></a>
+																			</td>
+																		</tr>
+																		<?php endif; ?>
+																	</table>
+																</div>
+																<div class="row">
+																	<div class="col s12 m12 l6">
+																		<a class="btn waves-effect waves-light fullsize light-blue lighten-1" href="<?php echo $url->get("adminwebbook/edit/".$w->id."/".$p->id."/".$bu->id) ?>">
+																			Bearbeiten<i class="material-icons left">edit</i>
+																		</a>
+																	</div>
+																	<div class="col s12 m12 l6">
+																		<a class="btn waves-effect waves-light fullsize light-blue lighten-1 modal-trigger" href="#chfile-<?=$w->id;?>">
+																			Pdf tauschen<i class="material-icons right">autorenew</i>
+																		</a>
+																		<div id="chfile-<?=$w->id;?>" class="modal">
+																			<div class="modal-content">
+																				<div class="row">
+																					<h4 class="center">Pdf tauschen (Webbook-ID: <strong><?=$w->id;?></strong>)</h4>
+																				</div>
+																				<table class="bordered">
+																					<tr>
+																						<td class="black-text"><strong>Name:</strong></td> 
+																						<td class="black-text">
+																							<?php echo basename($w->pdfpath); ?>
+																						</td>
+																					</tr>
+																					<tr>
+																						<td class="black-text"><strong>Größe:</strong></td>
+																						<td class="black-text">
+																							<?php echo round((filesize($w->pdfpath)/1024), 2).' KByte'; ?>
+																						</td>
+																					</tr>
+																				</table>
+																				<form id="chpfile" name="chpfile" action="/adminwebbook/chfile/<?=$w->id;?>/adminwebbook" method="post" enctype="multipart/form-data">
+																					 <div class="row">
+																						<div class="col s12 m12 l12">
+																							<div class="file-field input-field">
+																								<input class="file-path validate black-text" id="pdfinput" type="text"/>
+																								<div class="btn waves-effect waves-light light-blue lighten-1">
+																									<span>Pdf <i class="material-icons right">cloud_upload</i></span>
+																									<input type="file" name="pdffile" id="pdffile" />
+																								</div>
+																							</div>
+																						</div>
+																					</div>
+																			</div>
+																			<div class="modal-footer">
+																				<div class="col s12 m12 l6">
+																					<a class="btn waves-effect fullsize light-blue lighten-1 modal-action modal-close waves-light" href="#!">Schließen <i class="material-icons left">close</i></a>
+																				</div>
+																				<div class="col s12 m12 l6">
+																					<button class="btn waves-effect waves-light fullsize teal accent-3 black-text" type="submit" id="createDirect" name="action" value="changefile">Aktualisieren
+																						<i class="material-icons right black-text">done</i>
+																					</button>
+																				</div>
+																				</form>
+																			</div>
+																		</div>
+																	</div>
+																</div>
+															</div>
+														</div>
+													</li>
+													<?php $wpcounter++; ?>
+												<?php endforeach; ?>
+											</ul>
+											<?php else : ?>
+												<p>Zu diesem Projekt sind keine Webbooks gefunden worden.</p>
+											<?php endif; ?>
+											<?php $ppcounter++; ?>
+										<?php endforeach; ?>
+									<?php else : ?>
+										<p class="black-text">Es liegen für diesen Kunden keine Projekte vor.</p>
+									<?php endif; ?>
+								</div>
+							</div>
 						</div>
 					</li>
 				<?php endforeach; ?>

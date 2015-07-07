@@ -35,7 +35,7 @@ class WebbookController extends ControllerBase
 		]);
 	}
 
-	public function chwebbookAction($wid)
+	public function chwebbookAction($wid, $route)
 	{
 		if(isset($_POST['action']) && $_POST['action'] == 'chwebb')
 		{
@@ -57,11 +57,12 @@ class WebbookController extends ControllerBase
 				print_r('Fehler!!');
 			}
 			else {
-				$this->response->redirect("webbook");
+				$this->response->redirect($route);
 			}
 		}
 	}
-
+	
+	
 	public function checkFormDataAction()
     {
         $this->view->disable();

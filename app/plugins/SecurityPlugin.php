@@ -46,7 +46,7 @@ class SecurityPlugin extends Plugin
 			$adminResources = array(
 				'adminuser'    => array('index', 'adduser', 'addadmin', 'updateadmin', 'checkadduserdata', 'checkadmindata', 'edit', 'update', 'saveuser', 'saveadmin', 'delete'),
 				'adminaccount'     => array('index', 'edit', 'activate', 'deactivate', 'save', 'create', 'delete', 'show'),
-				'adminwebbook' => array('index', 'new', 'edit', 'save', 'create', 'delete'),
+				'adminwebbook' => array('index', 'new', 'edit', 'addwb', 'chfile', 'save', 'create', 'delete', 'savewebbook'),
 				'admincenter' => array('index')
 			);
 			foreach ($adminResources as $resource => $actions) {

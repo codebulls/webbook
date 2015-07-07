@@ -94,7 +94,7 @@ $url = new Url();
 								    <div class="modal-content left-align">
 										<ul class="collection with-header">
 											<li class="collection-header black-text"><h5>Letzte 4 Webbooks für das Projekt: <strong><?php echo $project->title; ?></strong></h5></li>
-											<?php $webbooks = Webbook::getprojectwebbooks($project->id); $wi = 1; ?>
+											<?php $webbooks = Webbook::getlastfourwebbooks($project->id); $wi = 1; ?>
 											<?php foreach($webbooks as $w) : ?>
 												<li class="collection-item avatar">
 													<i class="material-icons circle light-blue lighten-1">folder</i>
@@ -181,7 +181,7 @@ $url = new Url();
 												<form id="newproject" name="newproject" action="/project/delete/<?php echo $project->id; ?>" method="post">
 					                                	<input type="hidden" value="ja" name="delconfirm" id="delconfirm"/>
 														<?php if(Webbook::getcount($project->id) > 0) : ?>
-															<input type="hidden" value="<?php foreach(Webbook::getprojectwebbooks($project->id) as $w) {echo $w->id.'/';} ?>" name="wids" />
+															<input type="hidden" value="<?php foreach(Webbook::getlastfourwebbooks($project->id) as $w) {echo $w->id.'/';} ?>" name="wids" />
 														<?php endif; ?>
 					                        </div>
 											<div class="modal-footer">

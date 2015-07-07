@@ -1,0 +1,60 @@
+<?php
+use Phalcon\Mvc\Url;
+use \Phalcon\Tag as Tag;
+$url = new Url();
+?>
+<div class="section">
+	<div class="container">
+	    <div class="row">
+	        <div class="l12 s12">
+	            <h1 class="header center white-text lighten-1 accent-3">Webbook bearbeiten</h1>
+	        </div>
+	    </div>
+	</div>
+</div>
+<div class="divider"></div>
+<div class="section">
+  <div class="container">
+    <div class="row marginNull">
+      <div class="col s12 m12 l12">
+          <?=Tag::linkTo(array("/adminwebbook", 'Zur Webbook Übersicht<i class="material-icons left">view_list</i>', 'class' => 'btn waves-effect waves-light fullsize light-blue lighten-1'));?>
+      </div>
+    </div>
+  </div>
+</div>
+<div class="divider"></div>
+<div class="section">
+	<div class="container">
+		<form id="adwbedit" name="adwbedit" method="post" action="/adminwebbook/savewebbook/<?=$webbook->id;?>/adminwebbook">
+			<div class="row">
+				<div class="input-field col s12 m12 l12">
+					<i class="material-icons prefix">text_format</i>
+					<input id="wbtitle" name="wbtitle" type="text" class="validate" value="<?=$webbook->title;?>"/>
+					<label for="wbtitle">Webbook-Titel</label>
+				</div>
+				<div class="input-field col s12 l12 m12">
+				<select name="wbproject" id="wbproject">
+					<?php if(!empty($webbook->project_id)) : ?>
+						<option value="<?=$currentproject->id;?>" selected><?=$currentproject->title;?></option>
+						<?php foreach ($projects as $p): ?>
+							<?php if($p->id == $currentproject->id) continue; ?>
+							<option value="<?=$p->id;?>"><?=$p->title;?></option>
+						<?php endforeach; ?>
+					<?php else : ?>
+						<option disabled selected>Bitte wählen</option>
+						<?php foreach ($projects as $p): ?>
+							<option value="<?=$p->id?>"><?=$p->title?></option>
+						<?php endforeach; ?>
+					<?php endif; ?>
+				</select>
+				<label for="project">Projekt Auswahl: bitte wählen Sie ein Projekt aus.</label>
+			</div>
+			</div>
+			<div class="col s12 m12 l12">
+				<button class="btn waves-effect waves-light fullsize teal accent-3 black-text" type="submit" id="createDirect" name="action" value="saveadminwebbook">Speichern
+					<i class="material-icons right black-text">done</i>
+				</button>
+			</div>
+		</form>
+	</div>
+</div>

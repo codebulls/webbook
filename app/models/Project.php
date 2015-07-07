@@ -34,6 +34,10 @@ class Project extends BaseModel
 	
 	public static function getProjects($uid)
 	{
-		return Project::find("user_id = ".$uid);
+		$projects = Project::query()
+			->where("user_id = ".$uid)
+			->order("title asc")
+			->execute();
+		return $projects;
 	}
 }

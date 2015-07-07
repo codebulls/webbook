@@ -16,11 +16,27 @@ main {
     float:right;
 }
 
+.greyBack {
+	background: #777;
+}
+
 .wd25 {
   width: 25px;
 }
 
-#customerlist .active .collapsible-header {
+.cpwlist .collapsible-header {
+	background: #fff!important;
+	color: #000!important;
+}
+
+.cpwlist .active .collapsible-header {
+	background: #29B6F6!important;
+	color: #fff!important;
+}
+
+
+
+#customerlist .active .collapsible-header, #cplists .active .collapsible-header, #cpplist .active .collapsible-header {
     background: #29B6F6;
     color: #fff;
 }
@@ -50,6 +66,14 @@ main {
 
 .marginTopTen {
     margin-top: 10px;
+}
+
+.marginTopNull {
+	margin-top: 0;
+}
+
+.paddingTopTen {
+	padding-top: 10px;
 }
 
 .wbCounter {

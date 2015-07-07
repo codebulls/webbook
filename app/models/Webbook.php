@@ -16,7 +16,7 @@ class Webbook extends BaseModel
     	return count($webbooks);
     }
 
-    public static function getprojectwebbooks($pid)
+    public static function getlastfourwebbooks($pid)
     {
 		$webbooks = Webbook::query()
 		    ->where("project_id = ".$pid)
@@ -26,17 +26,24 @@ class Webbook extends BaseModel
 
         return $webbooks;
     }
-
+	
+	public static function getProjectWebbooks($pid)
+	{
+		$webbooks = Webbook::query()
+			->where("project_id = ".$pid)
+			->order("created_at desc")
+			->execute();
+		return $webbooks;
+	}
+	
 	public static function getAccWebbooks($aid)
 	{
-		$webbooks = Webbook::find("account_id = ".$aid);
-		return count($webbooks);
+		return count(Webbook::find("account_id = ".$aid));
 	}
 
 	public static function getAwebbooks($aid)
 	{
-		$webbooks = Webbook::find("account_id = ".$aid);
-		return $webbooks;
+		return Webbook::find("account_id = ".$aid);
 	}
 
 

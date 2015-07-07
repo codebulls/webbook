@@ -1,0 +1,25 @@
+<?php
+use Phalcon\Mvc\Url;
+use \Phalcon\Tag as Tag;
+$url = new Url();
+?>
+<div class="section">
+	<div class="container">
+	    <div class="row">
+	        <div class="l12 s12">
+	            <h1 class="header center white-text lighten-1 accent-3">Webbook hinzufügen</h1>
+	        </div>
+	    </div>
+	</div>
+</div>
+<div class="divider"></div>
+<div class="section">
+    <div class="container">
+        <div class="row marginNull">
+            <div class="col s12 m12 l12">
+                <?=Tag::linkTo(array("/adminwebbook", 'Zur Webbook Übersicht<i class="material-icons left">home</i>', 'class' => 'btn waves-effect waves-light fullsize light-blue lighten-1'));?>
+            </div>
+        </div>
+    </div>
+</div>
+<div class="divider"></div>
