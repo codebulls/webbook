@@ -10,6 +10,9 @@ try {
      * Read the configuration
      */
     $config = include APP_PATH . "/app/config/config.php";
+    
+    
+    
 
     /**
      * Read auto-loader
